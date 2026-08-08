@@ -1,10 +1,5 @@
 # Current
 
-## Promote Pawn
-
-- [X] with move
-- [ ] with capture
-
 
 # Planned
 
@@ -62,7 +57,14 @@
 
 # Completed
 
+## Promote Pawn
+
+- with move
+- with capture
+
 ## Pawn capture
+
+- avoid overruns
 
 ## Move Pawn
 

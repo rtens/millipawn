@@ -30,26 +30,17 @@ vector<Move> Game::pawnMoves(int square) {
 
   int dir = 1;
   int startRow = 1;
-  int promotion = 7;
+  int promotion = 6;
   if (piece & WHITE) {
     dir = -1;
     startRow = 6;
-    promotion = 0;
+    promotion = 1;
   }
 
   int one_step = square + (8 * dir);
   int two_steps = one_step + (8 * dir);
   int diag_left = one_step - 1;
   int diag_right = one_step + 1;
-
-  if (one_step / 8 == promotion) {
-    return {
-        Move{square, one_step, QUEEN},
-        Move{square, one_step, ROOK},
-        Move{square, one_step, KNIGHT},
-        Move{square, one_step, BISHOP},
-    };
-  }
 
   vector<Move> moves;
 
@@ -70,6 +61,17 @@ vector<Move> Game::pawnMoves(int square) {
     if (target != EMPTY && (target & COLOR) != (piece & COLOR)) {
       moves.push_back(Move{square, d});
     }
+  }
+
+  if (square / 8 == promotion) {
+    vector<Move> promotions;
+    for (Move m : moves) {
+      promotions.push_back(Move{m.from, m.to, QUEEN});
+      promotions.push_back(Move{m.from, m.to, ROOK});
+      promotions.push_back(Move{m.from, m.to, KNIGHT});
+      promotions.push_back(Move{m.from, m.to, BISHOP});
+    }
+    return promotions;
   }
 
   return moves;

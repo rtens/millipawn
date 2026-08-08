@@ -124,42 +124,55 @@ void pawnMoves() {
     should(pm(g.moves(39)), ",h4g3");
   });
 
-  test("promote with move", []() {
+  test("white promotes with move", []() {
     Game g;
     g.restore("8/1P");
-    auto white = g.moves(9);
-    should(pm(white), ",b7b8q,b7b8r,b7b8n,b7b8b");
+    auto moves = g.moves(9);
+    should(pm(moves), ",b7b8q,b7b8r,b7b8n,b7b8b");
 
-    g.make(white[0]);
+    g.make(moves[0]);
     should(g.fen().substr(0, 6), "1Q6/8/");
     g.restore("8/1P");
-    g.make(white[1]);
+    g.make(moves[1]);
     should(g.fen().substr(0, 6), "1R6/8/");
     g.restore("8/1P");
-    g.make(white[2]);
+    g.make(moves[2]);
     should(g.fen().substr(0, 6), "1N6/8/");
     g.restore("8/1P");
-    g.make(white[3]);
+    g.make(moves[3]);
     should(g.fen().substr(0, 6), "1B6/8/");
+  });
 
+  test("black promotes with move", []() {
+    Game g;
     g.restore("8//////1p/");
-    auto black = g.moves(49);
-    should(pm(black), ",b2b1q,b2b1r,b2b1n,b2b1b");
+    auto moves = g.moves(49);
+    should(pm(moves), ",b2b1q,b2b1r,b2b1n,b2b1b");
 
-    g.make(black[0]);
+    g.make(moves[0]);
     should(g.fen().substr(11, 6), "/8/1q6");
     g.restore("//////1p/8");
-    g.make(black[1]);
+    g.make(moves[1]);
     should(g.fen().substr(11, 6), "/8/1r6");
     g.restore("//////1p/8");
-    g.make(black[2]);
+    g.make(moves[2]);
     should(g.fen().substr(11, 6), "/8/1n6");
     g.restore("//////1p/8");
-    g.make(black[3]);
+    g.make(moves[3]);
     should(g.fen().substr(11, 6), "/8/1b6");
   });
 
-  test("promote with capture", []() {});
+  test("white promotes with capture", []() {
+    Game g;
+    g.restore("ppp/1P");
+    should(pm(g.moves(9)), ",b7a8q,b7a8r,b7a8n,b7a8b,b7c8q,b7c8r,b7c8n,b7c8b");
+  });
+
+  test("black promotes with capture", []() {
+    Game g;
+    g.restore("//////1p/PPP");
+    should(pm(g.moves(49)), ",b2a1q,b2a1r,b2a1n,b2a1b,b2c1q,b2c1r,b2c1n,b2c1b");
+  });
 }
 
 int main() {
