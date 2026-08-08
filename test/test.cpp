@@ -1,8 +1,8 @@
-using namespace std;
 #include <functional>
 #include <iostream>
 #include <numeric>
 #include <vector>
+using namespace std;
 
 #include "../lib/include/Game.h"
 

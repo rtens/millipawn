@@ -1,10 +1,10 @@
-using namespace std;
 #include "../include/Game.h"
 
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+using namespace std;
 
 void Game::make(Move move)
 {

@@ -1,8 +1,8 @@
 #pragma once
-using namespace std;
 
 #include <string>
 #include <vector>
+using namespace std;
 
 struct Move {
   int from = -1;
