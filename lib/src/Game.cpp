@@ -6,158 +6,158 @@
 #include <vector>
 using namespace std;
 
-const string Game::STARTPOS = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
+const string Game::STARTPOS =
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
 
 void Game::make(Move move) {
-	turn ^= 24;
-	pieces[move.to] = pieces[move.from];
-	pieces[move.from] = EMPTY;
+  turn ^= 24;
+  pieces[move.to] = pieces[move.from];
+  pieces[move.from] = EMPTY;
 }
 
 vector<Move> Game::moves(int square) {
-	vector<Move> moves;
+  vector<Move> moves;
 
-	switch (pieces[square] & TYPE) {
-	case PAWN:
-		int dir = 1;
-		int startRow = 1;
-		if (pieces[square] & WHITE) {
-			dir = -1;
-			startRow = 6;
-		}
+  switch (pieces[square] & TYPE) {
+    case PAWN:
+      int dir = 1;
+      int startRow = 1;
+      if (pieces[square] & WHITE) {
+        dir = -1;
+        startRow = 6;
+      }
 
-		int one_step = square + (8 * dir);
-		int two_steps = square + (16 * dir);
-		if (pieces[one_step] == EMPTY) {
-			moves.push_back(Move{square, one_step});
+      int one_step = square + (8 * dir);
+      int two_steps = square + (16 * dir);
+      if (pieces[one_step] == EMPTY) {
+        moves.push_back(Move{square, one_step});
 
-			if (square / 8 == startRow && pieces[two_steps] == EMPTY) {
-				moves.push_back(Move{square, two_steps});
-			}
-		}
-		break;
-	}
+        if (square / 8 == startRow && pieces[two_steps] == EMPTY) {
+          moves.push_back(Move{square, two_steps});
+        }
+      }
+      break;
+  }
 
-	return moves;
+  return moves;
 }
 
 string Game::print(Move move) {
-	stringstream ss;
+  stringstream ss;
 
-	ss << char((move.from % 8) + 'a') << 8 - (move.from / 8);
-	ss << char((move.to % 8) + 'a') << 8 - (move.to / 8);
+  ss << char((move.from % 8) + 'a') << 8 - (move.from / 8);
+  ss << char((move.to % 8) + 'a') << 8 - (move.to / 8);
 
-	return ss.str();
+  return ss.str();
 }
 
 string Game::fen() {
-	stringstream ss;
+  stringstream ss;
 
-	int empties = 0;
-	for (int i = 0; i < 64; i++) {
-		if (i > 0 && i % 8 == 0) {
-			if (empties) {
-				ss << empties;
-				empties = 0;
-			}
-			ss << "/";
-		}
+  int empties = 0;
+  for (int i = 0; i < 64; i++) {
+    if (i > 0 && i % 8 == 0) {
+      if (empties) {
+        ss << empties;
+        empties = 0;
+      }
+      ss << "/";
+    }
 
-		int p = pieces[i];
-		if (p == EMPTY) {
-			empties++;
+    int p = pieces[i];
+    if (p == EMPTY) {
+      empties++;
 
-		} else {
-			if (empties) {
-				ss << to_string(empties);
-				empties = 0;
-			}
+    } else {
+      if (empties) {
+        ss << to_string(empties);
+        empties = 0;
+      }
 
-			int type = p & TYPE;
-			int color = p & COLOR;
-			char c = '?';
+      int type = p & TYPE;
+      int color = p & COLOR;
+      char c = '?';
 
-			if (type == PAWN) c = 'p';
-			if (type == ROOK) c = 'r';
-			if (type == KNIGHT) c = 'n';
-			if (type == BISHOP) c = 'b';
-			if (type == QUEEN) c = 'q';
-			if (type == KING) c = 'k';
+      if (type == PAWN) c = 'p';
+      if (type == ROOK) c = 'r';
+      if (type == KNIGHT) c = 'n';
+      if (type == BISHOP) c = 'b';
+      if (type == QUEEN) c = 'q';
+      if (type == KING) c = 'k';
 
-			if (color == WHITE) c = c - 'a' + 'A';
+      if (color == WHITE) c = c - 'a' + 'A';
 
-			ss << c;
-		}
-	}
+      ss << c;
+    }
+  }
 
-	if (empties) {
-		ss << empties;
-	}
+  if (empties) {
+    ss << empties;
+  }
 
-	if (turn == WHITE) {
-		ss << " w";
-	} else {
-		ss << " b";
-	}
+  if (turn == WHITE) {
+    ss << " w";
+  } else {
+    ss << " b";
+  }
 
-	ss << " - - 0 1";
-	return ss.str();
+  ss << " - - 0 1";
+  return ss.str();
 }
 
-void Game::restore(string fen)
-{
-	const int p_pieces = 0;
-	const int p_turn = 1;
-	const int p_castle = 2;
-	const int p_enpassant = 3;
-	int part = p_pieces;
+void Game::restore(string fen) {
+  const int p_pieces = 0;
+  const int p_turn = 1;
+  const int p_castle = 2;
+  const int p_enpassant = 3;
+  int part = p_pieces;
 
-	int row = 0;
-	int col = 0;
+  int row = 0;
+  int col = 0;
 
-	for (int i = 0; i < fen.length(); i++) {
-		char c = fen[i];
+  for (int i = 0; i < fen.length(); i++) {
+    char c = fen[i];
 
-		if (c == ' ') {
-			part++;
-		}
+    if (c == ' ') {
+      part++;
+    }
 
-		switch (part) {
-		case p_pieces:
-			if (c == '/') {
-				row++;
-				col = 0;
+    switch (part) {
+      case p_pieces:
+        if (c == '/') {
+          row++;
+          col = 0;
 
-			} else if (c >= '1' && c <= '8') {
-				for (int i=0; i < c - '0'; i++) {
-					pieces[row * 8 + col] = EMPTY;
-					col++;
-				}
+        } else if (c >= '1' && c <= '8') {
+          for (int i = 0; i < c - '0'; i++) {
+            pieces[row * 8 + col] = EMPTY;
+            col++;
+          }
 
-			} else {
-				int color = WHITE;
-				if (c > 'a') {
-					color = BLACK;
-					c = c - 'a' + 'A';
-				}
+        } else {
+          int color = WHITE;
+          if (c > 'a') {
+            color = BLACK;
+            c = c - 'a' + 'A';
+          }
 
-				int type;
-				if (c == 'P') type = PAWN;
-				if (c == 'R') type = ROOK;
-				if (c == 'N') type = KNIGHT;
-				if (c == 'B') type = BISHOP;
-				if (c == 'Q') type = QUEEN;
-				if (c == 'K') type = KING;
+          int type;
+          if (c == 'P') type = PAWN;
+          if (c == 'R') type = ROOK;
+          if (c == 'N') type = KNIGHT;
+          if (c == 'B') type = BISHOP;
+          if (c == 'Q') type = QUEEN;
+          if (c == 'K') type = KING;
 
-				pieces[row * 8 + col] = color | type;
-				col++;
-			}
-			break;
+          pieces[row * 8 + col] = color | type;
+          col++;
+        }
+        break;
 
-		case p_turn:
-			turn = WHITE;
-			if (c == 'b') turn = BLACK;
-			break;
-		}
-	}
+      case p_turn:
+        turn = WHITE;
+        if (c == 'b') turn = BLACK;
+        break;
+    }
+  }
 }
