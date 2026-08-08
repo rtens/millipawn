@@ -1,13 +1,13 @@
 CXX = g++
 CXXFLAGS = -g
 TARGET = bin/test
-SRCS = test/*.cpp lib/src/*.cpp
+SRCS = $(wildcard test/*.cpp) $(wildcard lib/src/*.cpp)
 OBJS = $(SRCS:.cpp=.o)
 
 $(TARGET): $(OBJS)
 		$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
 
-%.o: %.cpp lib/include/*.h
+%.o: %.cpp $(wildcard lib/include/*.h)
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
