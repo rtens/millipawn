@@ -10,9 +10,13 @@ const string Game::STARTPOS =
     "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
 
 void Game::make(Move move) {
-  turn ^= 24;
-  pieces[move.to] = pieces[move.from];
+  if (move.promote) {
+    pieces[move.to] = move.promote | (pieces[move.from] & COLOR);
+  } else {
+    pieces[move.to] = pieces[move.from];
+  }
   pieces[move.from] = EMPTY;
+  turn ^= BLACK | WHITE;
 }
 
 vector<Move> Game::moves(int square) {
@@ -23,19 +27,31 @@ vector<Move> Game::moves(int square) {
 
 vector<Move> Game::pawnMoves(int square) {
   int piece = pieces[square];
-  vector<Move> moves;
 
   int dir = 1;
   int startRow = 1;
+  int promotion = 7;
   if (piece & WHITE) {
     dir = -1;
     startRow = 6;
+    promotion = 0;
   }
 
   int one_step = square + (8 * dir);
   int two_steps = one_step + (8 * dir);
   int diag_left = one_step - 1;
   int diag_right = one_step + 1;
+
+  if (one_step / 8 == promotion) {
+    return {
+        Move{square, one_step, QUEEN},
+        Move{square, one_step, ROOK},
+        Move{square, one_step, KNIGHT},
+        Move{square, one_step, BISHOP},
+    };
+  }
+
+  vector<Move> moves;
 
   if (pieces[one_step] == EMPTY) {
     moves.push_back(Move{square, one_step});
@@ -64,6 +80,15 @@ string Game::print(Move move) {
 
   ss << char((move.from % 8) + 'a') << 8 - (move.from / 8);
   ss << char((move.to % 8) + 'a') << 8 - (move.to / 8);
+
+  if (move.promote) {
+    if (move.promote == PAWN) ss << 'p';
+    if (move.promote == ROOK) ss << 'r';
+    if (move.promote == KNIGHT) ss << 'n';
+    if (move.promote == BISHOP) ss << 'b';
+    if (move.promote == QUEEN) ss << 'q';
+    if (move.promote == KING) ss << 'k';
+  }
 
   return ss.str();
 }

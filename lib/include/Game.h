@@ -7,6 +7,7 @@ using namespace std;
 struct Move {
   int from = -1;
   int to = -1;
+  int promote = 0;
 };
 
 class Game {

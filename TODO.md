@@ -1,9 +1,12 @@
 # Current
 
+## Promote Pawn
+
+- [X] with move
+- [ ] with capture
+
 
 # Planned
-
-## Promote Pawn
 
 ## Move Rook
 

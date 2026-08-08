@@ -123,6 +123,43 @@ void pawnMoves() {
     should(pm(g.moves(23)), ",h6g7");
     should(pm(g.moves(39)), ",h4g3");
   });
+
+  test("promote with move", []() {
+    Game g;
+    g.restore("8/1P");
+    auto white = g.moves(9);
+    should(pm(white), ",b7b8q,b7b8r,b7b8n,b7b8b");
+
+    g.make(white[0]);
+    should(g.fen().substr(0, 6), "1Q6/8/");
+    g.restore("8/1P");
+    g.make(white[1]);
+    should(g.fen().substr(0, 6), "1R6/8/");
+    g.restore("8/1P");
+    g.make(white[2]);
+    should(g.fen().substr(0, 6), "1N6/8/");
+    g.restore("8/1P");
+    g.make(white[3]);
+    should(g.fen().substr(0, 6), "1B6/8/");
+
+    g.restore("8//////1p/");
+    auto black = g.moves(49);
+    should(pm(black), ",b2b1q,b2b1r,b2b1n,b2b1b");
+
+    g.make(black[0]);
+    should(g.fen().substr(11, 6), "/8/1q6");
+    g.restore("//////1p/8");
+    g.make(black[1]);
+    should(g.fen().substr(11, 6), "/8/1r6");
+    g.restore("//////1p/8");
+    g.make(black[2]);
+    should(g.fen().substr(11, 6), "/8/1n6");
+    g.restore("//////1p/8");
+    g.make(black[3]);
+    should(g.fen().substr(11, 6), "/8/1b6");
+  });
+
+  test("promote with capture", []() {});
 }
 
 int main() {
