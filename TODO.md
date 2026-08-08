@@ -41,7 +41,7 @@
 
 ## Piece square tables
 
-## Openings
+x## Openings
 
 ## Iterative deepening
 
