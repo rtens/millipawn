@@ -25,6 +25,8 @@ class Game {
   static const int WHITE = 8;
   static const int BLACK = 16;
 
+  static const string STARTPOS;
+
   static string print(Move move);
 
   int turn = WHITE;

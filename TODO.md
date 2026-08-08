@@ -1,7 +1,5 @@
 # Current
 
-## Read and print FEN
-
 
 # Planned
 
@@ -64,3 +62,7 @@
 
 
 # Completed
+
+## Read and print FEN
+
+- Only pieces
