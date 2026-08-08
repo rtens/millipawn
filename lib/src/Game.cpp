@@ -16,27 +16,44 @@ void Game::make(Move move) {
 }
 
 vector<Move> Game::moves(int square) {
+  int type = pieces[square] & TYPE;
+  if (type == PAWN) return pawnMoves(square);
+  return {};
+}
+
+vector<Move> Game::pawnMoves(int square) {
+  int piece = pieces[square];
   vector<Move> moves;
 
-  switch (pieces[square] & TYPE) {
-    case PAWN:
-      int dir = 1;
-      int startRow = 1;
-      if (pieces[square] & WHITE) {
-        dir = -1;
-        startRow = 6;
-      }
+  int dir = 1;
+  int startRow = 1;
+  if (piece & WHITE) {
+    dir = -1;
+    startRow = 6;
+  }
 
-      int one_step = square + (8 * dir);
-      int two_steps = square + (16 * dir);
-      if (pieces[one_step] == EMPTY) {
-        moves.push_back(Move{square, one_step});
+  int one_step = square + (8 * dir);
+  int two_steps = one_step + (8 * dir);
+  int diag_left = one_step - 1;
+  int diag_right = one_step + 1;
 
-        if (square / 8 == startRow && pieces[two_steps] == EMPTY) {
-          moves.push_back(Move{square, two_steps});
-        }
-      }
-      break;
+  if (pieces[one_step] == EMPTY) {
+    moves.push_back(Move{square, one_step});
+
+    if (square / 8 == startRow && pieces[two_steps] == EMPTY) {
+      moves.push_back(Move{square, two_steps});
+    }
+  }
+
+  vector<int> diags;
+  if (square % 8 != 0) diags.push_back(diag_left);
+  if (square % 8 != 7) diags.push_back(diag_right);
+
+  for (int d : diags) {
+    int target = pieces[d];
+    if (target != EMPTY && (target & COLOR) != (piece & COLOR)) {
+      moves.push_back(Move{square, d});
+    }
   }
 
   return moves;

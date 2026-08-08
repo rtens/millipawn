@@ -10,6 +10,9 @@ struct Move {
 };
 
 class Game {
+ private:
+  vector<Move> pawnMoves(int square);
+
  public:
   static const int TYPE = 7;
   static const int COLOR = 24;

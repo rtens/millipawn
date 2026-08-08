@@ -3,10 +3,6 @@
 
 # Planned
 
-## Move Pawn
-
-## Capture with Pawn
-
 ## Promote Pawn
 
 ## Move Rook
@@ -41,7 +37,7 @@
 
 ## Piece square tables
 
-x## Openings
+## Openings
 
 ## Iterative deepening
 
@@ -62,6 +58,10 @@ x## Openings
 
 
 # Completed
+
+## Pawn capture
+
+## Move Pawn
 
 ## Read and print FEN
 

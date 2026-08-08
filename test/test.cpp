@@ -47,30 +47,30 @@ void restoring() {
 
   test("overwrite pieces", []() {
     Game g;
-    g.restore("8/8/8/8/8/8/8/P7 w - - 0 1");
-    g.restore("8/8/8/8/8/8/P7/8 w - - 0 1");
-    should(g.fen(), "8/8/8/8/8/8/P7/8 w - - 0 1");
+    g.restore("P w - - 0 1");
+    g.restore("8/P w - - 0 1");
+    should(g.fen(), "8/P7/8/8/8/8/8/8 w - - 0 1");
   });
 }
 
 void moving() {
   test("blacks turn", []() {
     Game g;
-    g.restore("8/8/8/8/8/8/8/8 b - - 0 1");
+    g.restore("/ b - - 0 1");
     should(g.turn, Game::BLACK);
     should(g.fen(), "8/8/8/8/8/8/8/8 b - - 0 1");
   });
 
   test("simple move", []() {
     Game g;
-    g.restore("8/8/8/8/8/8/8/7P w - - 0 1");
-    g.make(Move{63, 63 - 16});
+    g.restore("/P w - - 0 1");
+    g.make(Move{8, 20});
     should(g.turn, Game::BLACK);
-    should(g.fen(), "8/8/8/8/8/7P/8/8 b - - 0 1");
+    should(g.fen(), "8/8/4P3/8/8/8/8/8 b - - 0 1");
   });
 }
 
-string printMoves(vector<Move> moves) {
+string pm(vector<Move> moves) {
   return accumulate(
       moves.begin(), moves.end(), string(),
       [](const string& s, Move m) { return s + "," + Game::print(m); });
@@ -79,38 +79,49 @@ string printMoves(vector<Move> moves) {
 void pawnMoves() {
   test("start moves", []() {
     Game g;
-    g.restore("8/p7/8/8/8/8/P7/8 w - - 0 1");
-    auto moves = printMoves(g.moves(48));
-    should(moves, ",a2a3,a2a4");
-    moves = printMoves(g.moves(8));
-    should(moves, ",a7a6,a7a5");
+    g.restore("/p/////P w - - 0 1");
+
+    should(pm(g.moves(48)), ",a2a3,a2a4");
+    should(pm(g.moves(8)), ",a7a6,a7a5");
   });
 
   test("normal move", []() {
     Game g;
-    g.restore("8/8/p7/8/8/P7/8/8 w - - 0 1");
-    auto moves = printMoves(g.moves(40));
-    should(moves, ",a3a4");
-    moves = printMoves(g.moves(16));
-    should(moves, ",a6a5");
+    g.restore("//p///P// w - - 0 1");
+
+    should(pm(g.moves(40)), ",a3a4");
+    should(pm(g.moves(16)), ",a6a5");
   });
 
   test("blocked", []() {
     Game g;
-    g.restore("8/8/8/8/PP6/P7/PP6/8");
+    g.restore("////PP/P/PP");
 
-    auto moves = printMoves(g.moves(48));
-    should(moves, "");
-
-    moves = printMoves(g.moves(40));
-    should(moves, "");
-
-    moves = printMoves(g.moves(49));
-    should(moves, ",b2b3");
+    should(pm(g.moves(48)), "");
+    should(pm(g.moves(40)), "");
+    should(pm(g.moves(49)), ",b2b3");
   });
 
   test("capture", []() {
+    Game g;
+    g.restore("/2ppp/3P//3p/2PPP");
 
+    should(pm(g.moves(19)), ",d6c7,d6e7");
+    should(pm(g.moves(35)), ",d4c3,d4e3");
+  });
+
+  test("capture on left edge", []() {
+    Game g;
+    g.restore("7p/pp/P//p6P/PP");
+    should(pm(g.moves(16)), ",a6b7");
+    should(pm(g.moves(32)), ",a4b3");
+  });
+
+  test("capture on right edge", []() {
+    Game g;
+    g.restore("/6pp/p6P//7p/6PP/P");
+    should(pm(g.moves(23)), ",h6g7");
+    should(pm(g.moves(39)), ",h4g3");
   });
 }
 
