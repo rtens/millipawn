@@ -1,25 +1,28 @@
 # Current
 
 
-# Planned
-
-## Move Rook
+# Planned: OTB
 
 ## Move Knight
 
 ## Move Bishop
 
-## Move King
+## Move Rook
 
 ## Move Queen
 
+## Move King
+
 ## Prevent illegal moves
 
-## Castling
+## Castle
 
 ## En passant
 
 ## Game over
+
+
+# Planned: AI
 
 ## Random response
 
@@ -41,10 +44,10 @@
 
 ## Transposition tables
 
-## End game
-
 
 # Ideas
+
+## End game
 
 ## Different strengths
 
