@@ -1,76 +1,76 @@
-# Current
+# Project Tasks
+
+## Current
 
 
-# Planned: OTB
+## Planned: OTB
 
-## Move Knight
+- Move Knight
 
-## Move Bishop
+- Move Bishop
 
-## Move Rook
+- Move Rook
 
-## Move Queen
+- Move Queen
 
-## Move King
+- Move King
 
-## Prevent illegal moves
+- Prevent illegal moves
 
-## Castle
+- Castle
 
-## En passant
+- En passant
 
-## Game over
-
-
-# Planned: AI
-
-## Random response
-
-## Best evaluation response
-
-## Deep search
-
-## Alpha-beta pruning
-
-## Order moves
-
-## Captures extension
-
-## Piece square tables
-
-## Openings
-
-## Iterative deepening
-
-## Transposition tables
+- Game over
 
 
-# Ideas
+## Planned: AI
 
-## End game
+- Random response
 
-## Different strengths
+- Best evaluation response
 
-## Undo last move
+- Deep search
 
-## Export PGN of game
+- Alpha-beta pruning
 
-## Puzzle solver
+- Order moves
+
+- Captures extension
+
+- Piece square tables
+
+- Openings
+
+- Iterative deepening
+
+- Transposition tables
 
 
-# Completed
+## Ideas
 
-## Promote Pawn
+- End game
 
-- with move
-- with capture
+- Different strengths
 
-## Pawn capture
+- Undo last move
 
-- avoid overruns
+- Export PGN of game
 
-## Move Pawn
+- Puzzle solver
 
-## Read and print FEN
+
+## Completed
+
+- Promote Pawn
+	- with move
+	- with capture
+
+- Pawn capture
+	- avoid overruns
+
+- Move Pawn
+
+- Read and print FEN
 
 - Only pieces
