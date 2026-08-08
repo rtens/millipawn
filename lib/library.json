@@ -1,0 +1,11 @@
+{
+  "name": "Millipawn",
+  "version": "0.0.1",
+  "description": "Chess engine",
+  "dependencies": {},
+  "platforms": "espressif32",
+  "frameworks": [
+    "arduino",
+    "espidf"
+  ]
+}
