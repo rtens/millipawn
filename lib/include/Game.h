@@ -12,6 +12,7 @@ struct Move {
 
 class Game {
  private:
+	void addMove(int square, int by, vector<Move>& moves);
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);
 

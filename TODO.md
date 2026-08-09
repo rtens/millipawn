@@ -4,7 +4,7 @@
 
 - Move Knight
 	- [X] free
-	- [ ] limited
+	- [X] limited
 	- [ ] blocked
 	- [ ] capture
 

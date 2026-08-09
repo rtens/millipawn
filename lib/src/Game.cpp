@@ -25,6 +25,10 @@ void Game::moves(int square, vector<Move>& moves) {
 	if (type == KNIGHT) knightMoves(square, moves);
 }
 
+void Game::addMove(int square, int by, vector<Move>& moves) {
+	moves.push_back(Move{square, square + by});
+}
+
 void addPawnMove(vector<Move>& moves, int piece, int from, int by) {
 	int to = from + by;
 	if ((to / 8) % 7 == 0) {
@@ -73,8 +77,24 @@ void Game::pawnMoves(int square, vector<Move>& moves) {
 }
 
 void Game::knightMoves(int square, vector<Move>& moves) {
-	for (int by : {-17, -15, -10, -6, 6, 10, 15, 17}) {
-		moves.push_back(Move{square, square + by});
+	int row = square / 8;
+	int col = square % 8;
+
+	if (row >= 2) {
+		if (col >= 1) addMove(square, -17, moves);
+		if (col <= 6) addMove(square, -15, moves);
+	}
+	if (row >= 1) {
+		if (col >= 2) addMove(square, -10, moves);
+		if (col <= 5) addMove(square, -6, moves);
+	}
+	if (row <= 6) {
+		if (col >= 2) addMove(square, 6, moves);
+		if (col <= 5) addMove(square, 10, moves);
+	}
+	if (row <= 5) {
+		if (col >= 1) addMove(square, 15, moves);
+		if (col <= 6) addMove(square, 17, moves);
 	}
 }
 
