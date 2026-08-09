@@ -4,8 +4,6 @@
 
 ## Planned: OTB
 
-- Move Bishop
-
 - Move Rook
 
 - Move Queen
@@ -59,18 +57,15 @@
 
 ## Completed
 
+- Move Bishop
+
 - Move Knight
-	- free
-	- limited
-	- blocked
-	- capture
 
 - Promote Pawn
 	- with move
 	- with capture
 
 - Pawn capture
-	- avoid overruns
 
 - Move Pawn
 

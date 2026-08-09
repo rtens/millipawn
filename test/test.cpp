@@ -186,11 +186,10 @@ void knightMoves() {
 	test("alone", []() {
 		Game g;
 		g.restore("///3N");
-		should(pm(g, (27)),
-					",d5c7,d5e7,d5b6,d5f6,d5b4,d5f4,d5c3,d5e3");
+		should(pm(g, (27)), ",d5c7,d5e7,d5b6,d5f6,d5b4,d5f4,d5c3,d5e3");
 	});
 
-	test("limited", [](){
+	test("limited", []() {
 		Game g;
 		g.restore("7n/1N//1n/7N//1N/7n");
 		should(pm(g, 7), ",h8f7,h8g6");
@@ -203,8 +202,35 @@ void knightMoves() {
 
 	test("blocked", []() {
 		Game g;
-		g.restore("//2P1P/1P3P/3N/1P/2P1p/");
-		should(pm(g, 35), ",d4f3,d4e2");
+		g.restore("//2P1P/1P3P/3N/1P/2P1P/");
+		should(pm(g, 35), ",d4f3");
+	});
+
+	test("capture", []() {
+		Game g;
+		g.restore("//2p1P/1P3P/3N/1P3P/2P1p/");
+		should(pm(g, 35), ",d4c6,d4e2");
+	});
+}
+
+void bishopMoves() {
+	test("free", []() {
+		Game g;
+		g.restore("///3B");
+		should(pm(g, 27),
+					 ",d5c6,d5b7,d5a8,d5e6,d5f7,d5g8,d5c4,d5b3,d5a2,d5e4,d5f3,d5g2,d5h1");
+	});
+
+	test("blocked", []() {
+		Game g;
+		g.restore("P//4P/3B//1P3P//");
+		should(pm(g, 27), ",d5c6,d5b7,d5c4,d5e4");
+	});
+
+	test("capture", []() {
+		Game g;
+		g.restore("p//4p/3B//1p3p//");
+		should(pm(g, 27), ",d5c6,d5b7,d5a8,d5e6,d5c4,d5b3,d5e4,d5f3");
 	});
 }
 
@@ -213,4 +239,5 @@ int main() {
 	moving();
 	pawnMoves();
 	knightMoves();
+	bishopMoves();
 }

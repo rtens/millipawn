@@ -23,6 +23,7 @@ void Game::moves(int square, vector<Move>& moves) {
 	int type = pieces[square] & TYPE;
 	if (type == PAWN) pawnMoves(square, moves);
 	if (type == KNIGHT) knightMoves(square, moves);
+	if (type == BISHOP) bishopMoves(square, moves);
 }
 
 void Game::pawnMoves(int square, vector<Move>& moves) {
@@ -37,19 +38,19 @@ void Game::pawnMoves(int square, vector<Move>& moves) {
 
 	addPawnMove(square, moves, step, 0, false);
 
-	if (square / 8 == startRow && pieces[square + step*8] == EMPTY) {
-		addPawnMove(square, moves, step*2, 0, false);
+	if (square / 8 == startRow && pieces[square + step * 8] == EMPTY) {
+		addPawnMove(square, moves, step * 2, 0, false);
 	}
-
-	if (pieces[square + step*8 - 1] != EMPTY) {
+	if (pieces[square + step * 8 - 1] != EMPTY) {
 		addPawnMove(square, moves, step, -1);
 	}
-	if (pieces[square + step*8 + 1] != EMPTY) {
+	if (pieces[square + step * 8 + 1] != EMPTY) {
 		addPawnMove(square, moves, step, 1);
 	}
 }
 
-void Game::addPawnMove(int from, vector<Move>& moves, int r, int c, bool capture) {
+void Game::addPawnMove(int from, vector<Move>& moves, int r, int c,
+											 bool capture) {
 	int row = from / 8 + r;
 	if (row == 0 || row == 7) {
 		addJump(from, moves, r, c, capture, Game::QUEEN);
@@ -72,17 +73,40 @@ void Game::knightMoves(int square, vector<Move>& moves) {
 	addJump(square, moves, 2, 1);
 }
 
-void Game::addJump(int from, vector<Move>& moves, int r, int c, bool capture, int promote) {
-	int row = from / 8 + r;
-	if (row < 0 || row > 7) return;
-	int col = from % 8 + c;
-	if (col < 0 || col > 7) return;
+void Game::bishopMoves(int square, vector<Move>& moves) {
+	addSlide(square, moves, -1, -1);
+	addSlide(square, moves, -1, 1);
+	addSlide(square, moves, 1, -1);
+	addSlide(square, moves, 1, 1);
+}
 
-	int to = from + r*8 + c;
-	if (pieces[to] & pieces[from] & COLOR) return;
-	if (!capture && pieces[to]) return;
+void Game::addSlide(int from, vector<Move>& moves, int r, int c) {
+	for (int i = 1; i < 8; i++) {
+		if (!addJump(from, moves, r * i, c * i)) {
+			return;
+		}
+	}
+}
+
+bool Game::addJump(int from, vector<Move>& moves, int r, int c, bool capture,
+									 int promote) {
+	int row = from / 8 + r;
+	if (row < 0 || row > 7) return false;
+	int col = from % 8 + c;
+	if (col < 0 || col > 7) return false;
+
+	int to = row * 8 + col;
+	if (pieces[to] & pieces[from] & COLOR) return false;
+
+	if (pieces[to]) {
+		if (capture) {
+			moves.push_back(Move{from, to, promote});
+		}
+		return false;
+	}
 
 	moves.push_back(Move{from, to, promote});
+	return true;
 }
 
 string Game::print(Move move) {

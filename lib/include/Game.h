@@ -14,8 +14,12 @@ class Game {
  private:
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);
-	void addPawnMove(int square, vector<Move>& moves, int r, int c, bool capture = true);
-	void addJump(int from, vector<Move>& moves, int r, int c, bool capture = true, int promote = 0);
+	void bishopMoves(int square, vector<Move>& moves);
+	void addPawnMove(int square, vector<Move>& moves, int r, int c,
+									 bool capture = true);
+	bool addJump(int from, vector<Move>& moves, int r, int c, bool capture = true,
+							 int promote = 0);
+	void addSlide(int from, vector<Move>& moves, int r, int c);
 
  public:
 	static const int TYPE = 7;
