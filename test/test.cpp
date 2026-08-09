@@ -218,7 +218,10 @@ void bishopMoves() {
 		Game g;
 		g.restore("///3B");
 		should(pm(g, 27),
-					 ",d5c6,d5b7,d5a8,d5e6,d5f7,d5g8,d5c4,d5b3,d5a2,d5e4,d5f3,d5g2,d5h1");
+					 ",d5c6,d5b7,d5a8"
+					 ",d5e6,d5f7,d5g8"
+					 ",d5c4,d5b3,d5a2"
+					 ",d5e4,d5f3,d5g2,d5h1");
 	});
 
 	test("blocked", []() {
@@ -234,10 +237,42 @@ void bishopMoves() {
 	});
 }
 
+void rookMoves() {
+	test("free", []() {
+		Game g;
+		g.restore("///3R");
+		should(pm(g, 27),
+					 ",d5d6,d5d7,d5d8"
+					 ",d5c5,d5b5,d5a5"
+					 ",d5e5,d5f5,d5g5,d5h5"
+					 ",d5d4,d5d3,d5d2,d5d1");
+	});
+
+	test("blocked", []() {
+		Game g;
+		g.restore("/3P//1P1R2P/3P");
+		should(pm(g, 27),
+					 ",d5d6"
+					 ",d5c5"
+					 ",d5e5,d5f5");
+	});
+
+	test("capture", []() {
+		Game g;
+		g.restore("/3p//1p1R2p/3p");
+		should(pm(g, 27),
+					 ",d5d6,d5d7"
+					 ",d5c5,d5b5"
+					 ",d5e5,d5f5,d5g5"
+					 ",d5d4");
+	});
+}
+
 int main() {
 	restoring();
 	moving();
 	pawnMoves();
 	knightMoves();
 	bishopMoves();
+	rookMoves();
 }

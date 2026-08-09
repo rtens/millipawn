@@ -4,8 +4,6 @@
 
 ## Planned: OTB
 
-- Move Rook
-
 - Move Queen
 
 - Move King
@@ -56,6 +54,8 @@
 
 
 ## Completed
+
+- Move Rook
 
 - Move Bishop
 
