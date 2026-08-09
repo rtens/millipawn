@@ -4,10 +4,6 @@
 
 ## Planned: OTB
 
-- Move Queen
-
-- Move King
-
 - Prevent illegal moves
 
 - Castle
@@ -54,6 +50,10 @@
 
 
 ## Completed
+
+- Move King
+
+- Move Queen
 
 - Move Rook
 

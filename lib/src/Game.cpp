@@ -25,6 +25,8 @@ void Game::moves(int square, vector<Move>& moves) {
 	if (type == KNIGHT) knightMoves(square, moves);
 	if (type == BISHOP) bishopMoves(square, moves);
 	if (type == ROOK) rookMoves(square, moves);
+	if (type == QUEEN) queenMoves(square, moves);
+	if (type == KING) kingMoves(square, moves);
 }
 
 void Game::pawnMoves(int square, vector<Move>& moves) {
@@ -86,6 +88,22 @@ void Game::rookMoves(int square, vector<Move>& moves) {
 	addSlide(square, moves, 0, -1);
 	addSlide(square, moves, 0, 1);
 	addSlide(square, moves, 1, 0);
+}
+
+void Game::queenMoves(int square, vector<Move>& moves) {
+	rookMoves(square, moves);
+	bishopMoves(square, moves);
+}
+
+void Game::kingMoves(int square, vector<Move>& moves) {
+	addJump(square, moves, -1, -1);
+	addJump(square, moves, -1, 0);
+	addJump(square, moves, -1, 1);
+	addJump(square, moves, 0, -1);
+	addJump(square, moves, 0, 1);
+	addJump(square, moves, 1, -1);
+	addJump(square, moves, 1, 0);
+	addJump(square, moves, 1, 1);
 }
 
 void Game::addSlide(int from, vector<Move>& moves, int r, int c) {

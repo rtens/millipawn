@@ -16,6 +16,8 @@ class Game {
 	void knightMoves(int square, vector<Move>& moves);
 	void bishopMoves(int square, vector<Move>& moves);
 	void rookMoves(int square, vector<Move>& moves);
+	void queenMoves(int square, vector<Move>& moves);
+	void kingMoves(int square, vector<Move>& moves);
 	void addPawnMove(int square, vector<Move>& moves, int r, int c,
 									 bool capture = true);
 	bool addJump(int from, vector<Move>& moves, int r, int c, bool capture = true,
