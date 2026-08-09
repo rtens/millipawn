@@ -2,13 +2,16 @@
 
 ## Current
 
-## Planned: OTB
 
-- Prevent illegal moves
+## Planned: OTB
 
 - Castle
 
 - En passant
+
+- Undo move
+
+- Prevent illegal moves
 
 - Game over
 
