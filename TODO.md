@@ -2,10 +2,13 @@
 
 ## Current
 
+- Move Knight
+	- [X] free
+	- [ ] limited
+	- [ ] blocked
+	- [ ] capture
 
 ## Planned: OTB
-
-- Move Knight
 
 - Move Bishop
 
