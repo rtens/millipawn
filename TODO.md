@@ -2,12 +2,6 @@
 
 ## Current
 
-- Move Knight
-	- [X] free
-	- [X] limited
-	- [ ] blocked
-	- [ ] capture
-
 ## Planned: OTB
 
 - Move Bishop
@@ -64,6 +58,12 @@
 
 
 ## Completed
+
+- Move Knight
+	- free
+	- limited
+	- blocked
+	- capture
 
 - Promote Pawn
 	- with move

@@ -200,6 +200,12 @@ void knightMoves() {
 		should(pm(g, 49), ",b2a4,b2c4,b2d3,b2d1");
 		should(pm(g, 63), ",h1g3,h1f2");
 	});
+
+	test("blocked", []() {
+		Game g;
+		g.restore("//2P1P/1P3P/3N/1P/2P1p/");
+		should(pm(g, 35), ",d4f3,d4e2");
+	});
 }
 
 int main() {

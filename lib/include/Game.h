@@ -12,9 +12,10 @@ struct Move {
 
 class Game {
  private:
-	void addMove(int square, int by, vector<Move>& moves);
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);
+	void addPawnMove(int square, vector<Move>& moves, int r, int c, bool capture = true);
+	void addJump(int from, vector<Move>& moves, int r, int c, bool capture = true, int promote = 0);
 
  public:
 	static const int TYPE = 7;

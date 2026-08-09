@@ -25,77 +25,64 @@ void Game::moves(int square, vector<Move>& moves) {
 	if (type == KNIGHT) knightMoves(square, moves);
 }
 
-void Game::addMove(int square, int by, vector<Move>& moves) {
-	moves.push_back(Move{square, square + by});
-}
-
-void addPawnMove(vector<Move>& moves, int piece, int from, int by) {
-	int to = from + by;
-	if ((to / 8) % 7 == 0) {
-		moves.push_back(Move{from, to, Game::QUEEN});
-		moves.push_back(Move{from, to, Game::ROOK});
-		moves.push_back(Move{from, to, Game::KNIGHT});
-		moves.push_back(Move{from, to, Game::BISHOP});
-	} else {
-		moves.push_back(Move{from, to});
-	}
-}
-
 void Game::pawnMoves(int square, vector<Move>& moves) {
 	int piece = pieces[square];
 
-	int dir = 1;
+	int step = 1;
 	int startRow = 1;
 	if (piece & WHITE) {
-		dir = -1;
+		step = -1;
 		startRow = 6;
 	}
 
-	int one_step = 8 * dir;
-	int two_steps = one_step * 2;
-	int diag_left = one_step - 1;
-	int diag_right = one_step + 1;
+	addPawnMove(square, moves, step, 0, false);
 
-	if (pieces[square + one_step] == EMPTY) {
-		addPawnMove(moves, piece, square, one_step);
-
-		if (square / 8 == startRow && pieces[square + two_steps] == EMPTY) {
-			addPawnMove(moves, piece, square, two_steps);
-		}
+	if (square / 8 == startRow && pieces[square + step*8] == EMPTY) {
+		addPawnMove(square, moves, step*2, 0, false);
 	}
 
-	vector<int> diags;
-	if (square % 8 != 0) diags.push_back(diag_left);
-	if (square % 8 != 7) diags.push_back(diag_right);
+	if (pieces[square + step*8 - 1] != EMPTY) {
+		addPawnMove(square, moves, step, -1);
+	}
+	if (pieces[square + step*8 + 1] != EMPTY) {
+		addPawnMove(square, moves, step, 1);
+	}
+}
 
-	for (int d : diags) {
-		int target = pieces[square + d];
-		if (target != EMPTY && (target & COLOR) != (piece & COLOR)) {
-			addPawnMove(moves, piece, square, d);
-		}
+void Game::addPawnMove(int from, vector<Move>& moves, int r, int c, bool capture) {
+	int row = from / 8 + r;
+	if (row == 0 || row == 7) {
+		addJump(from, moves, r, c, capture, Game::QUEEN);
+		addJump(from, moves, r, c, capture, Game::ROOK);
+		addJump(from, moves, r, c, capture, Game::KNIGHT);
+		addJump(from, moves, r, c, capture, Game::BISHOP);
+	} else {
+		addJump(from, moves, r, c, capture);
 	}
 }
 
 void Game::knightMoves(int square, vector<Move>& moves) {
-	int row = square / 8;
-	int col = square % 8;
+	addJump(square, moves, -2, -1);
+	addJump(square, moves, -2, 1);
+	addJump(square, moves, -1, -2);
+	addJump(square, moves, -1, 2);
+	addJump(square, moves, 1, -2);
+	addJump(square, moves, 1, 2);
+	addJump(square, moves, 2, -1);
+	addJump(square, moves, 2, 1);
+}
 
-	if (row >= 2) {
-		if (col >= 1) addMove(square, -17, moves);
-		if (col <= 6) addMove(square, -15, moves);
-	}
-	if (row >= 1) {
-		if (col >= 2) addMove(square, -10, moves);
-		if (col <= 5) addMove(square, -6, moves);
-	}
-	if (row <= 6) {
-		if (col >= 2) addMove(square, 6, moves);
-		if (col <= 5) addMove(square, 10, moves);
-	}
-	if (row <= 5) {
-		if (col >= 1) addMove(square, 15, moves);
-		if (col <= 6) addMove(square, 17, moves);
-	}
+void Game::addJump(int from, vector<Move>& moves, int r, int c, bool capture, int promote) {
+	int row = from / 8 + r;
+	if (row < 0 || row > 7) return;
+	int col = from % 8 + c;
+	if (col < 0 || col > 7) return;
+
+	int to = from + r*8 + c;
+	if (pieces[to] & pieces[from] & COLOR) return;
+	if (!capture && pieces[to]) return;
+
+	moves.push_back(Move{from, to, promote});
 }
 
 string Game::print(Move move) {
