@@ -365,9 +365,48 @@ void castling() {
 	test("cannot castle when in check", []() {});
 	test("cannot castle through check", []() {});
 
-	test("lose castling when King moves", []() {});
-	test("lose castling when Rook moves", []() {});
-	test("lose castling when Rook captured", []() {});
+	test("lose castling when King moves", []() {
+		Game g;
+		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R");
+		g.make(Move{4, 3});
+		g.make(Move{3, 4});
+		g.make(Move{60, 61});
+		g.make(Move{61, 60});
+		should(pm(g.moves(60)), ",e1d1,e1f1");
+		should(pm(g.moves(4)), ",e8d8,e8f8");
+	});
+	test("lose king castling when Rook moves", []() {
+		Game g;
+		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R");
+		g.make(Move{7, 15});
+		g.make(Move{63, 55});
+		should(pm(g.moves(60)), ",e1d1,e1f1,e1c1");
+		should(pm(g.moves(4)), ",e8d8,e8f8,e8c8");
+	});
+	test("lose queen castling when Rook moves", []() {
+		Game g;
+		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R");
+		g.make(Move{0, 8});
+		g.make(Move{56, 48});
+		should(pm(g.moves(60)), ",e1d1,e1f1,e1g1");
+		should(pm(g.moves(4)), ",e8d8,e8f8,e8g8");
+	});
+	test("lose king castling when Rook captured", []() {
+		Game g;
+		g.restore("r3k2r/3pppP/////3PPP2/R3K2R");
+		g.make(Move{14, 7});
+		g.make(Move{54, 63});
+		should(pm(g.moves(60)), ",e1d1,e1f1,e1c1");
+		should(pm(g.moves(4)), ",e8d8,e8f8,e8c8");
+	});
+	test("lose queen castling when Rook captured", []() {
+		Game g;
+		g.restore("r3k2r/1P1ppp2/////1p1PPP2/R3K2R");
+		g.make(Move{9, 0});
+		g.make(Move{49, 56});
+		should(pm(g.moves(60)), ",e1d1,e1f1,e1g1");
+		should(pm(g.moves(4)), ",e8d8,e8f8,e8g8");
+	});
 }
 
 int main() {
@@ -380,5 +419,6 @@ int main() {
 	queenMoves();
 	kingMoves();
 	castling();
+
 	cout << endl;
 }

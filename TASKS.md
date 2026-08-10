@@ -4,8 +4,10 @@
 
 - Castle
 	- [X] move rooks
-	- [ ] lose castling
+	- [X] lose rights
 	- [ ] consider checks
+	- [ ] print rights
+	- [ ] parse rights
 
 ## Planned: OTB
 

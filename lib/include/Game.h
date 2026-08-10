@@ -12,6 +12,10 @@ struct Move {
 
 class Game {
  private:
+	// Playing
+	int castleWhite = QUEEN | KING;
+	int castleBlack = QUEEN | KING;
+
 	// Move Generation
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);
@@ -30,12 +34,12 @@ class Game {
 	static const int COLOR = 24;
 	static const int EMPTY = 0;
 
-	static const int PAWN = 1;
-	static const int BISHOP = 2;
-	static const int KNIGHT = 3;
-	static const int ROOK = 4;
-	static const int KING = 5;
-	static const int QUEEN = 6;
+	static const int KING = 1;
+	static const int QUEEN = 2;
+	static const int BISHOP = 3;
+	static const int KNIGHT = 4;
+	static const int ROOK = 5;
+	static const int PAWN = 6;
 
 	static const int WHITE = 8;
 	static const int BLACK = 16;

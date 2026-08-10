@@ -98,20 +98,20 @@ void Game::kingMoves(int square, vector<Move>& moves) {
 	addJump(square, moves, 1, 0);
 	addJump(square, moves, 1, 1);
 
-	if (square == 60) {
-		if (!pieces[61] && !pieces[62]) {
+	if (castleWhite && square == 60) {
+		if (castleWhite & KING && !pieces[61] && !pieces[62]) {
 			addJump(square, moves, 0, 2);
 		}
-		if (!pieces[59] && !pieces[58]) {
+		if (castleWhite & QUEEN && !pieces[59] && !pieces[58]) {
 			addJump(square, moves, 0, -2);
 		}
 	}
 
-	if (square == 4) {
-		if (!pieces[5] && !pieces[6]) {
+	if (castleBlack && square == 4) {
+		if (castleBlack & KING && !pieces[5] && !pieces[6]) {
 			addJump(square, moves, 0, 2);
 		}
-		if (!pieces[3] && !pieces[2]) {
+		if (castleBlack & QUEEN && !pieces[3] && !pieces[2]) {
 			addJump(square, moves, 0, -2);
 		}
 	}
