@@ -51,6 +51,8 @@
 
 - Puzzle solver
 
+- Check mate "animation"
+
 
 ## Completed
 
