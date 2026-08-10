@@ -52,6 +52,8 @@
 
 ## Completed
 
+- King prevents castling
+
 - En passant
 
 - Castle

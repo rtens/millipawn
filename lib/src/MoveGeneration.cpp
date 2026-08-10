@@ -155,9 +155,10 @@ vector<int> Game::attacked(int color) {
 	vector<int> attacked{};
 
 	for (int i = 0; i < 64; i++) {
+		if (i == 4 || i == 60) continue;
+
 		int attacker = pieces[i];
 		if (!attacker) continue;
-		if ((attacker & TYPE) == KING) continue;
 		if ((attacker & COLOR) == color) continue;
 
 		vector<Move> attacking = moves(i);

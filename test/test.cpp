@@ -408,6 +408,11 @@ void castling() {
 		should(pm(g.moves(60)), ",e1d1,e1f1");
 		should(pm(g.moves(4)), ",e8d8,e8f8");
 	});
+	test("king prevents castking", []() {
+		Game g;
+		g.restore("r3kp/K2ppp w kq");
+		should(pm(g.moves(4)), ",e8d8");
+	});
 
 	test("lose castling when King moves", []() {
 		Game g;
