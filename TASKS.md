@@ -2,10 +2,12 @@
 
 ## Current
 
+- Castle
+	- [X] move rooks
+	- [ ] lose castling
+	- [ ] consider checks
 
 ## Planned: OTB
-
-- Castle
 
 - En passant
 

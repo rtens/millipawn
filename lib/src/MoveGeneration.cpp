@@ -97,6 +97,24 @@ void Game::kingMoves(int square, vector<Move>& moves) {
 	addJump(square, moves, 1, -1);
 	addJump(square, moves, 1, 0);
 	addJump(square, moves, 1, 1);
+
+	if (square == 60) {
+		if (!pieces[61] && !pieces[62]) {
+			addJump(square, moves, 0, 2);
+		}
+		if (!pieces[59] && !pieces[58]) {
+			addJump(square, moves, 0, -2);
+		}
+	}
+
+	if (square == 4) {
+		if (!pieces[5] && !pieces[6]) {
+			addJump(square, moves, 0, 2);
+		}
+		if (!pieces[3] && !pieces[2]) {
+			addJump(square, moves, 0, -2);
+		}
+	}
 }
 
 void Game::addSlide(int from, vector<Move>& moves, int r, int c) {
