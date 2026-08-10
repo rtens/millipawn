@@ -182,7 +182,7 @@ bool Game::addJump(int from, vector<Move>& moves, int r, int c, bool capture,
 	if (col < 0 || col > 7) return false;
 
 	int to = row * 8 + col;
-	if (pieces[to] & pieces[from] & COLOR) return false;
+	if ((pieces[to] & COLOR) == (pieces[from] & COLOR)) return false;
 
 	if (pieces[to]) {
 		if (capture) {

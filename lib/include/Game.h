@@ -12,13 +12,12 @@ struct Move {
 
 class Game {
  private:
-	// Playing
-
 	// Move Generation
 	int castleWhite = QUEEN | KING;
 	int castleBlack = QUEEN | KING;
 	bool canCastle(int color, int side);
 	vector<int> attacked(int color);
+
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);
 	void bishopMoves(int square, vector<Move>& moves);

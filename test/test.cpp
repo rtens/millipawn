@@ -446,6 +446,21 @@ void castling() {
 		should(pm(g.moves(60)), ",e1d1,e1f1,e1g1");
 		should(pm(g.moves(4)), ",e8d8,e8f8,e8g8");
 	});
+
+	test("only castle King side with rights", []() {
+		Game g;
+		g.restore("4r2b///////4R2B");
+		g.make(Move{60, 62});
+		g.make(Move{4, 6});
+		should(g.fen().substr(0, 20), "6rb/8/8/8/8/8/8/6RB ");
+	});
+	test("only castle Queen side with rights", []() {
+		Game g;
+		g.restore("b3r3///////B3R3");
+		g.make(Move{60, 58});
+		g.make(Move{4, 2});
+		should(g.fen().substr(0, 22), "b1r5/8/8/8/8/8/8/B1R5 ");
+	});
 }
 
 int main() {
