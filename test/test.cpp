@@ -330,19 +330,20 @@ void castling() {
 		g.restore("//////3PPP/3PK2R");
 		should(pm(g.moves(60)), ",e1f1,e1g1");
 		g.make(Move{60, 62});
-		should(g.fen(), "8/8/8/8/8/8/3PPP2/3P1RK1 w - - 0 1");
+		should(g.fen(), "8/8/8/8/8/8/3PPP2/3P1RK1 b - - 0 1");
 	});
 	test("castle white queenside", []() {
 		Game g;
 		g.restore("//////3PPP2/R3KP");
 		should(pm(g.moves(60)), ",e1d1,e1c1");
 		g.make(Move{60, 58});
-		should(g.fen(), "8/8/8/8/8/8/3PPP2/2KR1P2 w - - 0 1");
+		should(g.fen(), "8/8/8/8/8/8/3PPP2/2KR1P2 b - - 0 1");
 	});
 	test("castle black kingside", []() {
 		Game g;
 		g.restore("3pk2r/3ppp2");
 		should(pm(g.moves(4)), ",e8f8,e8g8");
+		g.turn = Game::BLACK;
 		g.make(Move{4, 6});
 		should(g.fen(), "3p1rk1/3ppp2/8/8/8/8/8/8 w - - 0 1");
 	});
@@ -350,6 +351,7 @@ void castling() {
 		Game g;
 		g.restore("r3kp2/3ppp2");
 		should(pm(g.moves(4)), ",e8d8,e8c8");
+		g.turn = Game::BLACK;
 		g.make(Move{4, 2});
 		should(g.fen(), "2kr1p2/3ppp2/8/8/8/8/8/8 w - - 0 1");
 	});
@@ -378,4 +380,5 @@ int main() {
 	queenMoves();
 	kingMoves();
 	castling();
+	cout << endl;
 }

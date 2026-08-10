@@ -19,15 +19,19 @@ void Game::make(Move move) {
 
 	if (move.from == 60) {
 		if (move.to == 62) {
-			make(Move{63, 61});
+			pieces[61] = pieces[63];
+			pieces[63] = EMPTY;
 		} else if (move.to == 58) {
-			make(Move{56, 59});
+			pieces[59] = pieces[56];
+			pieces[56] = EMPTY;
 		}
 	} else if (move.from == 4) {
 		if (move.to == 6) {
-			make(Move{7, 5});
+			pieces[5] = pieces[7];
+			pieces[7] = EMPTY;
 		} else if (move.to == 2) {
-			make(Move{0, 3});
+			pieces[3] = pieces[0];
+			pieces[0] = EMPTY;
 		}
 	}
 
