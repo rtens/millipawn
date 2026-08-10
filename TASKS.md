@@ -2,13 +2,6 @@
 
 ## Current
 
-- Castle
-	- [X] move rooks
-	- [X] lose rights
-	- [X] print rights
-	- [X] parse rights
-	- [ ] consider checks
-
 ## Planned: OTB
 
 - En passant
@@ -59,6 +52,13 @@
 
 
 ## Completed
+
+- Castle
+	- move rooks
+	- lose rights
+	- print rights
+	- parse rights
+	- consider checks
 
 - Move King
 

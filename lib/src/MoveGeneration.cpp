@@ -98,23 +98,72 @@ void Game::kingMoves(int square, vector<Move>& moves) {
 	addJump(square, moves, 1, 0);
 	addJump(square, moves, 1, 1);
 
-	if (castleWhite && square == 60) {
-		if (castleWhite & KING && !pieces[61] && !pieces[62]) {
+	if (square == 60) {
+		if (canCastle(WHITE, KING)) {
 			addJump(square, moves, 0, 2);
 		}
-		if (castleWhite & QUEEN && !pieces[59] && !pieces[58]) {
+		if (canCastle(WHITE, QUEEN)) {
 			addJump(square, moves, 0, -2);
 		}
 	}
 
-	if (castleBlack && square == 4) {
-		if (castleBlack & KING && !pieces[5] && !pieces[6]) {
+	if (square == 4) {
+		if (canCastle(BLACK, KING)) {
 			addJump(square, moves, 0, 2);
 		}
-		if (castleBlack & QUEEN && !pieces[3] && !pieces[2]) {
+		if (canCastle(BLACK, QUEEN)) {
 			addJump(square, moves, 0, -2);
 		}
 	}
+}
+
+bool Game::canCastle(int color, int side) {
+	int castle = castleBlack;
+	int king = 4;
+	if (color == WHITE) {
+		castle = castleWhite;
+		king = 60;
+	}
+
+	if (!(castle & side)) return false;
+
+	vector<int> gap = {};
+	if (side == QUEEN) {
+		gap = {king - 1, king - 2, king - 3};
+	} else {
+		gap = {king + 1, king + 2};
+	}
+
+	for (int g : gap) {
+		if (pieces[g] != EMPTY) return false;
+	}
+
+	for (int a : attacked(color)) {
+		if (a == king) return false;
+		for (int g : gap) {
+			if (a == g) return false;
+		}
+	}
+
+	return true;
+}
+
+vector<int> Game::attacked(int color) {
+	vector<int> attacked{};
+
+	for (int i = 0; i < 64; i++) {
+		int attacker = pieces[i];
+		if (!attacker) continue;
+		if ((attacker & TYPE) == KING) continue;
+		if ((attacker & COLOR) == color) continue;
+
+		vector<Move> attacking = moves(i);
+		for (Move m : attacking) {
+			attacked.push_back(m.to);
+		}
+	}
+
+	return attacked;
 }
 
 void Game::addSlide(int from, vector<Move>& moves, int r, int c) {

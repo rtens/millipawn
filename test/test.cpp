@@ -378,8 +378,24 @@ void castling() {
 		should(pm(g.moves(60)), "");
 		should(pm(g.moves(4)), "");
 	});
-	test("cannot castle when in check", []() {});
-	test("cannot castle through check", []() {});
+	test("cannot castle when in check", []() {
+		Game g;
+		g.restore("3pk2r/3Ppp2/////3pPP2/3PK2R w Kk");
+		should(pm(g.moves(60)), ",e1d2,e1f1");
+		should(pm(g.moves(4)), ",e8f8,e8d7");
+	});
+	test("can castle when not in check", []() {
+		Game g;
+		g.restore("r3k2r/3ppp2/4BR2/8/8/3r1q2/3PPP2/R3K2R w KQkq");
+		should(pm(g.moves(60)), ",e1d1,e1f1,e1g1,e1c1");
+		should(pm(g.moves(4)), ",e8d8,e8f8,e8g8,e8c8");
+	});
+	test("cannot castle through check", []() {
+		Game g;
+		g.restore("r3k2r/3ppp2/3B2R1/8/8/2n3q1/3PPP2/R3K2R w KQkq");
+		should(pm(g.moves(60)), ",e1d1,e1f1");
+		should(pm(g.moves(4)), ",e8d8,e8f8");
+	});
 
 	test("lose castling when King moves", []() {
 		Game g;
