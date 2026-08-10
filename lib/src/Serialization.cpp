@@ -92,7 +92,16 @@ string Game::fen() {
 		}
 	}
 
-	ss << " - 0 1";
+	ss << " ";
+
+	if (enPassant > -1) {
+		char file = (enPassant % 8) + 'a';
+		ss << file << (8 - enPassant / 8);
+	} else {
+		ss << "-";
+	}
+
+	ss << " 0 1";
 	return ss.str();
 }
 
@@ -102,6 +111,7 @@ void Game::restore(string fen) {
 	}
 	castleBlack = 0;
 	castleWhite = 0;
+	enPassant = -1;
 
 	const int p_pieces = 0;
 	const int p_turn = 1;
@@ -117,6 +127,7 @@ void Game::restore(string fen) {
 
 		if (c == ' ') {
 			part++;
+			continue;
 		}
 
 		switch (part) {
@@ -162,6 +173,11 @@ void Game::restore(string fen) {
 				if (c == 'k') castleBlack += KING;
 				if (c == 'q') castleBlack += QUEEN;
 				break;
+
+		case p_enpassant:
+			if (c == '-') break;
+			enPassant = (c - 'a') + (8 - (fen[++i] - '0')) * 8;
+			break;
 		}
 	}
 }

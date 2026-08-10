@@ -10,12 +10,31 @@ const string Game::STARTPOS =
 		"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 void Game::make(Move move) {
+	int piece = pieces[move.from];
+
 	if (move.promote) {
-		pieces[move.to] = move.promote | (pieces[move.from] & COLOR);
+		pieces[move.to] = move.promote | (piece  & COLOR);
 	} else {
-		pieces[move.to] = pieces[move.from];
+		pieces[move.to] = piece;
 	}
 	pieces[move.from] = EMPTY;
+
+	if (move.to == enPassant) {
+		if (piece & WHITE) {
+			pieces[move.to + 8] = 0;
+		} else {
+			pieces[move.to - 8] = 0;
+		}
+	}
+
+	int row = move.from / 8;
+	if (piece == (PAWN | BLACK) && row == 1 && move.to == move.from + 16) {
+		enPassant = move.from + 8;
+	} else if (piece == (PAWN | WHITE) && row == 6 && move.to == move.from - 16) {
+		enPassant = move.from - 8;
+	} else {
+		enPassant = -1;
+	}
 
 	if (move.from == 60) {
 		if ((castleWhite & KING) && move.to == 62) {

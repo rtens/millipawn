@@ -64,8 +64,20 @@ void restoring() {
 		should(g.fen().substr(17, 6), " KQkq ");
 		g.restore("/ w Kq");
 		should(g.fen().substr(17, 4), " Kq ");
-		// g.restore("/ w -");
-		// should(g.fen().substr(17, 3), " - ");
+		g.restore("/");
+		should(g.fen().substr(17, 3), " - ");
+		g.restore("/ w -");
+		should(g.fen().substr(17, 3), " - ");
+	});
+
+	test("en passant", []() {
+		Game g;
+		g.restore("/ w - g3");
+		should(g.fen().substr(19, 4), " g3 ");
+		g.restore("/");
+		should(g.fen().substr(19, 3), " - ");
+		g.restore("/ w - -");
+		should(g.fen().substr(19, 3), " - ");
 	});
 }
 
@@ -463,6 +475,27 @@ void castling() {
 	});
 }
 
+void enPassant() {
+	test("white takes", []() {
+		Game g;
+		g.restore("/3p//2P b");
+		g.make(Move{11, 27});
+		should(g.fen().substr(g.fen().find_first_of(' '), 8), " w - d6 ");
+		should(pm(g.moves(26)), ",c5c6,c5d6");
+		g.make(Move{26, 19});
+		should(g.fen().substr(0, 24), "8/8/3P4/8/8/8/8/8 b - - ");
+	});
+	test("black takes", []() {
+		Game g;
+		g.restore("////4p//3P w");
+		g.make(Move{51, 35});
+		should(g.fen().substr(g.fen().find_first_of(' '), 8), " b - d3 ");
+		should(pm(g.moves(36)), ",e4e3,e4d3");
+		g.make(Move{36, 43});
+		should(g.fen().substr(0, 24), "8/8/8/8/8/3p4/8/8 w - - ");
+	});
+}
+
 int main() {
 	restoring();
 	moving();
@@ -473,6 +506,7 @@ int main() {
 	queenMoves();
 	kingMoves();
 	castling();
+	enPassant();
 
 	cout << endl;
 }

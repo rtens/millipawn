@@ -15,6 +15,7 @@ class Game {
 	// Move Generation
 	int castleWhite = QUEEN | KING;
 	int castleBlack = QUEEN | KING;
+	int enPassant = -1;
 	bool canCastle(int color, int side);
 	vector<int> attacked(int color);
 

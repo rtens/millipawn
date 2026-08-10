@@ -2,9 +2,8 @@
 
 ## Current
 
-## Planned: OTB
 
-- En passant
+## Planned: OTB
 
 - Undo move
 
@@ -52,6 +51,8 @@
 
 
 ## Completed
+
+- En passant
 
 - Castle
 	- move rooks

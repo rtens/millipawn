@@ -34,14 +34,17 @@ void Game::pawnMoves(int square, vector<Move>& moves) {
 
 	addPawnMove(square, moves, step, 0, false);
 
-	if (square / 8 == startRow && pieces[square + step * 8] == EMPTY) {
+	int row = square / 8;
+	int one = square + step * 8;
+	if (row == startRow && pieces[one] == EMPTY) {
 		addPawnMove(square, moves, step * 2, 0, false);
 	}
-	if (pieces[square + step * 8 - 1] != EMPTY) {
-		addPawnMove(square, moves, step, -1);
-	}
-	if (pieces[square + step * 8 + 1] != EMPTY) {
-		addPawnMove(square, moves, step, 1);
+
+	for (int d : {-1, 1}) {
+		int to = square + step * 8 + d;
+		if (pieces[to] != EMPTY || to == enPassant) {
+			addPawnMove(square, moves, step, d);
+		}
 	}
 }
 
