@@ -74,11 +74,35 @@ string Game::fen() {
 		ss << " b";
 	}
 
-	ss << " - - 0 1";
+	ss << " ";
+	if (!castleWhite && !castleBlack) {
+		ss << "-";
+	} else {
+		if (castleWhite & KING) {
+			ss << "K";
+		}
+		if (castleWhite & QUEEN) {
+			ss << "Q";
+		}
+		if (castleBlack & KING) {
+			ss << "k";
+		}
+		if (castleBlack & QUEEN) {
+			ss << "q";
+		}
+	}
+
+	ss << " - 0 1";
 	return ss.str();
 }
 
 void Game::restore(string fen) {
+	for (int i = 0; i < 64; i++) {
+		pieces[i] = EMPTY;
+	}
+	castleBlack = 0;
+	castleWhite = 0;
+
 	const int p_pieces = 0;
 	const int p_turn = 1;
 	const int p_castle = 2;
@@ -130,6 +154,13 @@ void Game::restore(string fen) {
 			case p_turn:
 				turn = WHITE;
 				if (c == 'b') turn = BLACK;
+				break;
+
+			case p_castle:
+				if (c == 'K') castleWhite += KING;
+				if (c == 'Q') castleWhite += QUEEN;
+				if (c == 'k') castleBlack += KING;
+				if (c == 'q') castleBlack += QUEEN;
 				break;
 		}
 	}

@@ -7,7 +7,7 @@
 using namespace std;
 
 const string Game::STARTPOS =
-		"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1";
+		"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 void Game::make(Move move) {
 	if (move.promote) {

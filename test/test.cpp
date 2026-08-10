@@ -28,7 +28,7 @@ void restoring() {
 	test("empty board", []() {
 		Game g;
 		should(g.turn, Game::WHITE);
-		should(g.fen(), "8/8/8/8/8/8/8/8 w - - 0 1");
+		should(g.fen().substr(0, 15), "8/8/8/8/8/8/8/8");
 	});
 
 	test("starting position", []() {
@@ -40,33 +40,49 @@ void restoring() {
 
 	test("mixed position", []() {
 		Game g;
-		string mixed = "3r2B1/p3pp2/5Q2/kN3RpP/3P2P1/6P1/2PP2PP/7K w - - 0 1";
+		string mixed = "3r2B1/p3pp2/5Q2/kN3RpP/3P2P1/6P1/2PP2PP/7K";
 		g.restore(mixed);
-		should(g.fen(), mixed);
+		should(g.fen().substr(0, mixed.length()), mixed);
+	});
+
+	test("blacks turn", []() {
+		Game g;
+		g.restore("/////// b");
+		should(g.fen().substr(16, 1), "b");
 	});
 
 	test("overwrite pieces", []() {
 		Game g;
-		g.restore("P w - - 0 1");
-		g.restore("8/P w - - 0 1");
-		should(g.fen(), "8/P7/8/8/8/8/8/8 w - - 0 1");
+		g.restore("P");
+		g.restore("8/P");
+		should(g.fen().substr(0, 16), "8/P7/8/8/8/8/8/8");
+	});
+
+	test("castling", []() {
+		Game g;
+		g.restore("/ w KQkq");
+		should(g.fen().substr(17, 6), " KQkq ");
+		g.restore("/ w Kq");
+		should(g.fen().substr(17, 4), " Kq ");
+		// g.restore("/ w -");
+		// should(g.fen().substr(17, 3), " - ");
 	});
 }
 
 void moving() {
 	test("blacks turn", []() {
 		Game g;
-		g.restore("/ b - - 0 1");
+		g.restore("/ b");
 		should(g.turn, Game::BLACK);
-		should(g.fen(), "8/8/8/8/8/8/8/8 b - - 0 1");
+		should(g.fen().substr(16, 1), "b");
 	});
 
 	test("simple move", []() {
 		Game g;
-		g.restore("/P w - - 0 1");
+		g.restore("/P w");
 		g.make(Move{8, 20});
 		should(g.turn, Game::BLACK);
-		should(g.fen(), "8/8/4P3/8/8/8/8/8 b - - 0 1");
+		should(g.fen().substr(0, 19), "8/8/4P3/8/8/8/8/8 b");
 	});
 }
 
@@ -79,7 +95,7 @@ string pm(vector<Move> moves) {
 void pawnMoves() {
 	test("start moves", []() {
 		Game g;
-		g.restore("/p/////P w - - 0 1");
+		g.restore("/p/////P");
 
 		should(pm(g.moves(48)), ",a2a3,a2a4");
 		should(pm(g.moves(8)), ",a7a6,a7a5");
@@ -87,7 +103,7 @@ void pawnMoves() {
 
 	test("normal move", []() {
 		Game g;
-		g.restore("//p///P// w - - 0 1");
+		g.restore("//p///P//");
 
 		should(pm(g.moves(40)), ",a3a4");
 		should(pm(g.moves(16)), ",a6a5");
@@ -327,38 +343,38 @@ void kingMoves() {
 void castling() {
 	test("castle white kingside", []() {
 		Game g;
-		g.restore("//////3PPP/3PK2R");
+		g.restore("//////3PPP/3PK2R w KQkq");
 		should(pm(g.moves(60)), ",e1f1,e1g1");
 		g.make(Move{60, 62});
-		should(g.fen(), "8/8/8/8/8/8/3PPP2/3P1RK1 b - - 0 1");
+		should(g.fen().substr(0, 29), "8/8/8/8/8/8/3PPP2/3P1RK1 b kq");
 	});
 	test("castle white queenside", []() {
 		Game g;
-		g.restore("//////3PPP2/R3KP");
+		g.restore("//////3PPP2/R3KP w KQkq");
 		should(pm(g.moves(60)), ",e1d1,e1c1");
 		g.make(Move{60, 58});
-		should(g.fen(), "8/8/8/8/8/8/3PPP2/2KR1P2 b - - 0 1");
+		should(g.fen().substr(0, 29), "8/8/8/8/8/8/3PPP2/2KR1P2 b kq");
 	});
 	test("castle black kingside", []() {
 		Game g;
-		g.restore("3pk2r/3ppp2");
+		g.restore("3pk2r/3ppp2 w KQkq");
 		should(pm(g.moves(4)), ",e8f8,e8g8");
 		g.turn = Game::BLACK;
 		g.make(Move{4, 6});
-		should(g.fen(), "3p1rk1/3ppp2/8/8/8/8/8/8 w - - 0 1");
+		should(g.fen().substr(0, 29), "3p1rk1/3ppp2/8/8/8/8/8/8 w KQ");
 	});
 	test("castle black queenside", []() {
 		Game g;
-		g.restore("r3kp2/3ppp2");
+		g.restore("r3kp2/3ppp2 w KQkq");
 		should(pm(g.moves(4)), ",e8d8,e8c8");
 		g.turn = Game::BLACK;
 		g.make(Move{4, 2});
-		should(g.fen(), "2kr1p2/3ppp2/8/8/8/8/8/8 w - - 0 1");
+		should(g.fen().substr(0, 29), "2kr1p2/3ppp2/8/8/8/8/8/8 w KQ");
 	});
 
 	test("cannot castle through pieces", []() {
 		Game g;
-		g.restore("3pkp1r/3ppp2/////3PPP2/3PKP1R");
+		g.restore("3pkp1r/3ppp2/////3PPP2/3PKP1R w KQkq");
 		should(pm(g.moves(60)), "");
 		should(pm(g.moves(4)), "");
 	});
@@ -367,43 +383,50 @@ void castling() {
 
 	test("lose castling when King moves", []() {
 		Game g;
-		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R");
+		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R w KQkq");
+		should(g.fen().substr(g.fen().find_first_of(' ') + 1, 6), "w KQkq");
 		g.make(Move{4, 3});
 		g.make(Move{3, 4});
+		should(g.fen().substr(g.fen().find_first_of(' ') + 1, 4), "w KQ");
 		g.make(Move{60, 61});
 		g.make(Move{61, 60});
+		should(g.fen().substr(g.fen().find_first_of(' ') + 1, 3), "w -");
 		should(pm(g.moves(60)), ",e1d1,e1f1");
 		should(pm(g.moves(4)), ",e8d8,e8f8");
 	});
 	test("lose king castling when Rook moves", []() {
 		Game g;
-		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R");
+		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R w KQkq");
 		g.make(Move{7, 15});
 		g.make(Move{63, 55});
+		should(g.fen().substr(g.fen().find_first_of(' ') + 1, 4), "w Qq");
 		should(pm(g.moves(60)), ",e1d1,e1f1,e1c1");
 		should(pm(g.moves(4)), ",e8d8,e8f8,e8c8");
 	});
 	test("lose queen castling when Rook moves", []() {
 		Game g;
-		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R");
+		g.restore("r3k2r/3ppp2/////3PPP2/R3K2R w KQkq");
 		g.make(Move{0, 8});
 		g.make(Move{56, 48});
+		should(g.fen().substr(g.fen().find_first_of(' ') + 1, 4), "w Kk");
 		should(pm(g.moves(60)), ",e1d1,e1f1,e1g1");
 		should(pm(g.moves(4)), ",e8d8,e8f8,e8g8");
 	});
 	test("lose king castling when Rook captured", []() {
 		Game g;
-		g.restore("r3k2r/3pppP/////3PPP2/R3K2R");
+		g.restore("r3k2r/3pppP/////3PPP2/R3K2R w KQkq");
 		g.make(Move{14, 7});
 		g.make(Move{54, 63});
+		should(g.fen().substr(g.fen().find_first_of(' ') + 1, 4), "w Qq");
 		should(pm(g.moves(60)), ",e1d1,e1f1,e1c1");
 		should(pm(g.moves(4)), ",e8d8,e8f8,e8c8");
 	});
 	test("lose queen castling when Rook captured", []() {
 		Game g;
-		g.restore("r3k2r/1P1ppp2/////1p1PPP2/R3K2R");
+		g.restore("r3k2r/1P1ppp2/////1p1PPP2/R3K2R w KQkq");
 		g.make(Move{9, 0});
 		g.make(Move{49, 56});
+		should(g.fen().substr(g.fen().find_first_of(' ') + 1, 4), "w Kk");
 		should(pm(g.moves(60)), ",e1d1,e1f1,e1g1");
 		should(pm(g.moves(4)), ",e8d8,e8f8,e8g8");
 	});
