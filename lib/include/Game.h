@@ -12,6 +12,7 @@ struct Move {
 
 class Game {
  private:
+	// Move Generation
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);
 	void bishopMoves(int square, vector<Move>& moves);
@@ -39,15 +40,18 @@ class Game {
 	static const int WHITE = 8;
 	static const int BLACK = 16;
 
-	static const string STARTPOS;
-
-	static string print(Move move);
-
 	int turn = WHITE;
 	int pieces[64] = {};
 
+	// Playing
+	static const string STARTPOS;
+	void make(Move move);
+
+	// Move Generation
+	void moves(int square, vector<Move>& moves);
+
+	// Serialization
 	string fen();
 	void restore(string fen);
-	void make(Move move);
-	void moves(int square, vector<Move>& moves);
+	static string print(Move move);
 };
