@@ -70,10 +70,7 @@ void moving() {
 	});
 }
 
-string pm(Game g, int square) {
-	vector<Move> moves{};
-	g.moves(square, moves);
-
+string pm(vector<Move> moves) {
 	return accumulate(
 			moves.begin(), moves.end(), string(),
 			[](const string& s, Move m) { return s + "," + Game::print(m); });
@@ -84,56 +81,55 @@ void pawnMoves() {
 		Game g;
 		g.restore("/p/////P w - - 0 1");
 
-		should(pm(g, (48)), ",a2a3,a2a4");
-		should(pm(g, (8)), ",a7a6,a7a5");
+		should(pm(g.moves(48)), ",a2a3,a2a4");
+		should(pm(g.moves(8)), ",a7a6,a7a5");
 	});
 
 	test("normal move", []() {
 		Game g;
 		g.restore("//p///P// w - - 0 1");
 
-		should(pm(g, (40)), ",a3a4");
-		should(pm(g, (16)), ",a6a5");
+		should(pm(g.moves(40)), ",a3a4");
+		should(pm(g.moves(16)), ",a6a5");
 	});
 
 	test("blocked", []() {
 		Game g;
 		g.restore("////PP/P/PP");
 
-		should(pm(g, (48)), "");
-		should(pm(g, (40)), "");
-		should(pm(g, (49)), ",b2b3");
+		should(pm(g.moves(48)), "");
+		should(pm(g.moves(40)), "");
+		should(pm(g.moves(49)), ",b2b3");
 	});
 
 	test("capture", []() {
 		Game g;
 		g.restore("/2ppp/3P//3p/2PPP");
 
-		should(pm(g, (19)), ",d6c7,d6e7");
-		should(pm(g, (35)), ",d4c3,d4e3");
+		should(pm(g.moves(19)), ",d6c7,d6e7");
+		should(pm(g.moves(35)), ",d4c3,d4e3");
 	});
 
 	test("capture on left edge", []() {
 		Game g;
 		g.restore("7p/pp/P//p6P/PP");
-		should(pm(g, (16)), ",a6b7");
-		should(pm(g, (32)), ",a4b3");
+		should(pm(g.moves(16)), ",a6b7");
+		should(pm(g.moves(32)), ",a4b3");
 	});
 
 	test("capture on right edge", []() {
 		Game g;
 		g.restore("/6pp/p6P//7p/6PP/P");
-		should(pm(g, (23)), ",h6g7");
-		should(pm(g, (39)), ",h4g3");
+		should(pm(g.moves(23)), ",h6g7");
+		should(pm(g.moves(39)), ",h4g3");
 	});
 
 	test("white promotes with move", []() {
 		Game g;
 		g.restore("8/1P");
-		should(pm(g, 9), ",b7b8q,b7b8r,b7b8n,b7b8b");
+		should(pm(g.moves(9)), ",b7b8q,b7b8r,b7b8n,b7b8b");
 
-		vector<Move> moves;
-		g.moves(9, moves);
+		auto moves = g.moves(9);
 
 		g.make(moves[0]);
 		should(g.fen().substr(0, 6), "1Q6/8/");
@@ -151,10 +147,9 @@ void pawnMoves() {
 	test("black promotes with move", []() {
 		Game g;
 		g.restore("8//////1p/");
-		should(pm(g, 49), ",b2b1q,b2b1r,b2b1n,b2b1b");
+		should(pm(g.moves(49)), ",b2b1q,b2b1r,b2b1n,b2b1b");
 
-		vector<Move> moves;
-		g.moves(49, moves);
+		auto moves = g.moves(49);
 
 		g.make(moves[0]);
 		should(g.fen().substr(11, 6), "/8/1q6");
@@ -172,13 +167,13 @@ void pawnMoves() {
 	test("white promotes with capture", []() {
 		Game g;
 		g.restore("ppp/1P");
-		should(pm(g, (9)), ",b7a8q,b7a8r,b7a8n,b7a8b,b7c8q,b7c8r,b7c8n,b7c8b");
+		should(pm(g.moves(9)), ",b7a8q,b7a8r,b7a8n,b7a8b,b7c8q,b7c8r,b7c8n,b7c8b");
 	});
 
 	test("black promotes with capture", []() {
 		Game g;
 		g.restore("//////1p/PPP");
-		should(pm(g, (49)), ",b2a1q,b2a1r,b2a1n,b2a1b,b2c1q,b2c1r,b2c1n,b2c1b");
+		should(pm(g.moves(49)), ",b2a1q,b2a1r,b2a1n,b2a1b,b2c1q,b2c1r,b2c1n,b2c1b");
 	});
 }
 
@@ -186,30 +181,30 @@ void knightMoves() {
 	test("alone", []() {
 		Game g;
 		g.restore("///3N");
-		should(pm(g, (27)), ",d5c7,d5e7,d5b6,d5f6,d5b4,d5f4,d5c3,d5e3");
+		should(pm(g.moves(27)), ",d5c7,d5e7,d5b6,d5f6,d5b4,d5f4,d5c3,d5e3");
 	});
 
 	test("limited", []() {
 		Game g;
 		g.restore("7n/1N//1n/7N//1N/7n");
-		should(pm(g, 7), ",h8f7,h8g6");
-		should(pm(g, 9), ",b7d8,b7d6,b7a5,b7c5");
-		should(pm(g, 25), ",b5a7,b5c7,b5d6,b5d4,b5a3,b5c3");
-		should(pm(g, 39), ",h4g6,h4f5,h4f3,h4g2");
-		should(pm(g, 49), ",b2a4,b2c4,b2d3,b2d1");
-		should(pm(g, 63), ",h1g3,h1f2");
+		should(pm(g.moves(7)), ",h8f7,h8g6");
+		should(pm(g.moves(9)), ",b7d8,b7d6,b7a5,b7c5");
+		should(pm(g.moves(25)), ",b5a7,b5c7,b5d6,b5d4,b5a3,b5c3");
+		should(pm(g.moves(39)), ",h4g6,h4f5,h4f3,h4g2");
+		should(pm(g.moves(49)), ",b2a4,b2c4,b2d3,b2d1");
+		should(pm(g.moves(63)), ",h1g3,h1f2");
 	});
 
 	test("blocked", []() {
 		Game g;
 		g.restore("//2P1P/1P3P/3N/1P/2P1P/");
-		should(pm(g, 35), ",d4f3");
+		should(pm(g.moves(35)), ",d4f3");
 	});
 
 	test("capture", []() {
 		Game g;
 		g.restore("//2p1P/1P3P/3N/1P3P/2P1p/");
-		should(pm(g, 35), ",d4c6,d4e2");
+		should(pm(g.moves(35)), ",d4c6,d4e2");
 	});
 }
 
@@ -217,7 +212,7 @@ void bishopMoves() {
 	test("free", []() {
 		Game g;
 		g.restore("///3B");
-		should(pm(g, 27),
+		should(pm(g.moves(27)),
 					 ",d5c6,d5b7,d5a8"
 					 ",d5e6,d5f7,d5g8"
 					 ",d5c4,d5b3,d5a2"
@@ -227,13 +222,13 @@ void bishopMoves() {
 	test("blocked", []() {
 		Game g;
 		g.restore("P//4P/3B//1P3P//");
-		should(pm(g, 27), ",d5c6,d5b7,d5c4,d5e4");
+		should(pm(g.moves(27)), ",d5c6,d5b7,d5c4,d5e4");
 	});
 
 	test("capture", []() {
 		Game g;
 		g.restore("p//4p/3B//1p3p//");
-		should(pm(g, 27), ",d5c6,d5b7,d5a8,d5e6,d5c4,d5b3,d5e4,d5f3");
+		should(pm(g.moves(27)), ",d5c6,d5b7,d5a8,d5e6,d5c4,d5b3,d5e4,d5f3");
 	});
 }
 
@@ -241,7 +236,7 @@ void rookMoves() {
 	test("free", []() {
 		Game g;
 		g.restore("///3R");
-		should(pm(g, 27),
+		should(pm(g.moves(27)),
 					 ",d5d6,d5d7,d5d8"
 					 ",d5c5,d5b5,d5a5"
 					 ",d5e5,d5f5,d5g5,d5h5"
@@ -251,7 +246,7 @@ void rookMoves() {
 	test("blocked", []() {
 		Game g;
 		g.restore("/3P//1P1R2P/3P");
-		should(pm(g, 27),
+		should(pm(g.moves(27)),
 					 ",d5d6"
 					 ",d5c5"
 					 ",d5e5,d5f5");
@@ -260,7 +255,7 @@ void rookMoves() {
 	test("capture", []() {
 		Game g;
 		g.restore("/3p//1p1R2p/3p");
-		should(pm(g, 27),
+		should(pm(g.moves(27)),
 					 ",d5d6,d5d7"
 					 ",d5c5,d5b5"
 					 ",d5e5,d5f5,d5g5"
@@ -272,7 +267,7 @@ void queenMoves() {
 	test("free", []() {
 		Game g;
 		g.restore("///3Q");
-		should(pm(g, 27),
+		should(pm(g.moves(27)),
 					 ",d5d6,d5d7,d5d8"
 					 ",d5c5,d5b5,d5a5"
 					 ",d5e5,d5f5,d5g5,d5h5"
@@ -286,7 +281,7 @@ void queenMoves() {
 	test("blocked", []() {
 		Game g;
 		g.restore("/3P/2P1P/1P1Q2P/3P/5P/P7/");
-		should(pm(g, 27),
+		should(pm(g.moves(27)),
 					 ",d5d6"
 					 ",d5c5"
 					 ",d5e5,d5f5"
@@ -297,7 +292,7 @@ void queenMoves() {
 	test("capture", []() {
 		Game g;
 		g.restore("/3P/2P1P/1P1q2P/3P/5P/P7/");
-		should(pm(g, 27),
+		should(pm(g.moves(27)),
 					 ",d5d6,d5d7"
 					 ",d5c5,d5b5"
 					 ",d5e5,d5f5,d5g5"
@@ -313,19 +308,19 @@ void kingMoves() {
 	test("free", []() {
 		Game g;
 		g.restore("///3K");
-		should(pm(g, 27), ",d5c6,d5d6,d5e6,d5c5,d5e5,d5c4,d5d4,d5e4");
+		should(pm(g.moves(27)), ",d5c6,d5d6,d5e6,d5c5,d5e5,d5c4,d5d4,d5e4");
 	});
 
 	test("blocked", []() {
 		Game g;
 		g.restore("//2PP/3KP/2PP");
-		should(pm(g, 27), ",d5e6,d5c5,d5e4");
+		should(pm(g.moves(27)), ",d5e6,d5c5,d5e4");
 	});
 
 	test("capture", []() {
 		Game g;
 		g.restore("//2pP/3Kp/2PP");
-		should(pm(g, 27), ",d5c6,d5e6,d5c5,d5e5,d5e4");
+		should(pm(g.moves(27)), ",d5c6,d5e6,d5c5,d5e5,d5e4");
 	});
 }
 

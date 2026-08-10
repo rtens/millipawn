@@ -6,7 +6,13 @@
 #include "../include/Game.h"
 using namespace std;
 
-void Game::moves(int square, vector<Move>& moves) {
+vector<Move> Game::moves(int square) {
+	vector<Move> moves;
+	addMoves(square, moves);
+	return moves;
+}
+
+void Game::addMoves(int square, vector<Move>& moves) {
 	int type = pieces[square] & TYPE;
 	if (type == PAWN) pawnMoves(square, moves);
 	if (type == KNIGHT) knightMoves(square, moves);

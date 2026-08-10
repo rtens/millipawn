@@ -48,7 +48,8 @@ class Game {
 	void make(Move move);
 
 	// Move Generation
-	void moves(int square, vector<Move>& moves);
+	vector<Move> moves(int square);
+	void addMoves(int square, vector<Move>& moves);
 
 	// Serialization
 	string fen();
