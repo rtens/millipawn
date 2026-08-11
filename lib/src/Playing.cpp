@@ -117,8 +117,9 @@ void Game::undo() {
 	}
 
 	// Castling
-	if (move.castledBlack) {
-		castleBlack = move.castledBlack;
+	castleBlack = move.castledBlack;
+	castleWhite = move.castledWhite;
+	if (castleBlack && move.from == 4) {
 		if (move.to == 2) {
 			pieces[0] = pieces[3];
 			pieces[3] = EMPTY;
@@ -128,8 +129,7 @@ void Game::undo() {
 			pieces[5] = EMPTY;
 		}
 	}
-	if (move.castledWhite) {
-		castleWhite = move.castledWhite;
+	if (castleWhite && move.from == 60) {
 		if (move.to == 58) {
 			pieces[56] = pieces[59];
 			pieces[59] = EMPTY;
