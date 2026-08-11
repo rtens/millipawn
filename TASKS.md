@@ -2,13 +2,6 @@
 
 ## Current
 
-- Undo move
-	- [X] simple move
-	- [X] capture
-	- [ ] promotion
-	- [ ] en passant
-	- [ ] castling
-
 ## Planned: OTB
 
 - Prevent illegal moves
@@ -55,6 +48,13 @@
 
 
 ## Completed
+
+- Undo move
+	- simple move
+	- capture
+	- promotion
+	- en passant
+	- castling
 
 - King prevents castling
 

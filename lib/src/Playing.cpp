@@ -14,17 +14,18 @@ void Game::make(Move move) {
 
 	// Move & Capture
 	MadeMove made = MadeMove{move.from, move.to, pieces[move.to]};
-	history.push_back(made);
 	pieces[move.to] = piece;
 	pieces[move.from] = EMPTY;
 
 	// Promotion
 	if (move.promote) {
+		made.promoted = piece;
 		pieces[move.to] = move.promote | (piece & COLOR);
 	}
 
 	// Capture en passant
 	if (move.to == enPassant) {
+		made.enPassant = enPassant;
 		if (piece & WHITE) {
 			pieces[move.to + 8] = 0;
 		} else {
@@ -48,6 +49,8 @@ void Game::make(Move move) {
 	}
 
 	// Castling
+	made.castledWhite = castleWhite;
+	made.castledBlack = castleBlack;
 	if (move.from == 60) {
 		if ((castleWhite & KING) && move.to == 62) {
 			pieces[61] = pieces[63];
@@ -85,6 +88,7 @@ void Game::make(Move move) {
 
 	// Next turn
 	turn ^= COLOR;
+	history.push_back(made);
 }
 
 void Game::undo() {
@@ -96,6 +100,45 @@ void Game::undo() {
 	// Move
 	pieces[move.from] = pieces[move.to];
 	pieces[move.to] = move.capture;
+
+	// Promotion
+	if (move.promoted) {
+		pieces[move.from] = move.promoted;
+	}
+
+	// En passant
+	if (move.enPassant > -1) {
+		enPassant = move.enPassant;
+		if (pieces[move.from] & WHITE) {
+			pieces[enPassant + 8] = PAWN | BLACK;
+		} else {
+			pieces[enPassant - 8] = PAWN | WHITE;
+		}
+	}
+
+	// Castling
+	if (move.castledBlack) {
+		castleBlack = move.castledBlack;
+		if (move.to == 2) {
+			pieces[0] = pieces[3];
+			pieces[3] = EMPTY;
+		}
+		if (move.to == 6) {
+			pieces[7] = pieces[5];
+			pieces[5] = EMPTY;
+		}
+	}
+	if (move.castledWhite) {
+		castleWhite = move.castledWhite;
+		if (move.to == 58) {
+			pieces[56] = pieces[59];
+			pieces[59] = EMPTY;
+		}
+		if (move.to == 62) {
+			pieces[63] = pieces[61];
+			pieces[61] = EMPTY;
+		}
+	}
 
 	// Previous turn
 	turn ^= COLOR;

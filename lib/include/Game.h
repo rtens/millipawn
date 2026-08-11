@@ -14,6 +14,10 @@ struct MadeMove {
 	int from = -1;
 	int to = -1;
 	int capture = 0;
+	int promoted = 0;
+	int enPassant = -1;
+	int castledBlack = 0;
+	int castledWhite = 0;
 };
 
 class Game {
