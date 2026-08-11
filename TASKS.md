@@ -3,8 +3,8 @@
 ## Current
 
 - Undo move
-	- [ ] simple move
-	- [ ] capture
+	- [X] simple move
+	- [X] capture
 	- [ ] promotion
 	- [ ] en passant
 	- [ ] castling

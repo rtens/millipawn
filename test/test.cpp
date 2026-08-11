@@ -502,6 +502,30 @@ void enPassant() {
 }
 
 void undo() {
+	test("nothing to undo", []() {
+		Game g;
+		g.restore("//3R/PP3K");
+		g.undo();
+		should(g.fen().substr(0, 23), "8/8/3R4/PP3K2/8/8/8/8 w");
+	});
+
+	test("simple move", []() {
+		Game g;
+		g.restore("//3R/PP3K");
+		g.make(Move{19, 3});
+		should(g.fen().substr(0, 23), "3R4/8/8/PP3K2/8/8/8/8 b");
+		g.undo();
+		should(g.fen().substr(0, 23), "8/8/3R4/PP3K2/8/8/8/8 w");
+	});
+
+	test("capture", []() {
+		Game g;
+		g.restore("3b//3R/PP3K");
+		g.make(Move{19, 3});
+		should(g.fen().substr(0, 23), "3R4/8/8/PP3K2/8/8/8/8 b");
+		g.undo();
+		should(g.fen().substr(0, 25), "3b4/8/3R4/PP3K2/8/8/8/8 w");
+	});
 }
 
 int main() {

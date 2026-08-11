@@ -13,12 +13,14 @@ void Game::make(Move move) {
 	int piece = pieces[move.from];
 
 	// Move & Capture
+	MadeMove made = MadeMove{move.from, move.to, pieces[move.to]};
+	history.push_back(made);
 	pieces[move.to] = piece;
 	pieces[move.from] = EMPTY;
 
 	// Promotion
 	if (move.promote) {
-		pieces[move.to] = move.promote | (piece  & COLOR);
+		pieces[move.to] = move.promote | (piece & COLOR);
 	}
 
 	// Capture en passant
@@ -82,5 +84,19 @@ void Game::make(Move move) {
 	}
 
 	// Next turn
+	turn ^= COLOR;
+}
+
+void Game::undo() {
+	if (!history.size()) return;
+
+	MadeMove move = history.back();
+	history.pop_back();
+
+	// Move
+	pieces[move.from] = pieces[move.to];
+	pieces[move.to] = move.capture;
+
+	// Previous turn
 	turn ^= COLOR;
 }

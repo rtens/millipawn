@@ -10,8 +10,17 @@ struct Move {
 	int promote = 0;
 };
 
+struct MadeMove {
+	int from = -1;
+	int to = -1;
+	int capture = 0;
+};
+
 class Game {
  private:
+	// Playing
+	vector<MadeMove> history{};
+
 	// Move Generation
 	int castleWhite = QUEEN | KING;
 	int castleBlack = QUEEN | KING;
@@ -52,6 +61,7 @@ class Game {
 	// Playing
 	static const string STARTPOS;
 	void make(Move move);
+	void undo();
 
 	// Move Generation
 	vector<Move> moves(int square);
