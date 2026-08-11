@@ -501,6 +501,9 @@ void enPassant() {
 	});
 }
 
+void undo() {
+}
+
 int main() {
 	restoring();
 	moving();
@@ -512,6 +515,7 @@ int main() {
 	kingMoves();
 	castling();
 	enPassant();
+	undo();
 
 	cout << endl;
 }

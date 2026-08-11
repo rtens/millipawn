@@ -2,10 +2,14 @@
 
 ## Current
 
+- Undo move
+	- [ ] simple move
+	- [ ] capture
+	- [ ] promotion
+	- [ ] en passant
+	- [ ] castling
 
 ## Planned: OTB
-
-- Undo move
 
 - Prevent illegal moves
 
