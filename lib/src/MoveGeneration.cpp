@@ -9,7 +9,24 @@ using namespace std;
 vector<Move> Game::moves(int square) {
 	vector<Move> moves;
 	addMoves(square, moves);
-	return moves;
+
+	int mine = turn;
+	vector<Move> legals;
+	for (Move m : moves) {
+		bool legal = true;
+		make(m);
+		for (Move a : attacked(mine)) {
+			if (pieces[a.to] == (KING | mine)) {
+				legal = false;
+				break;
+			}
+		}
+		undo();
+		if (legal) {
+			legals.push_back(m);
+		}
+	}
+	return legals;
 }
 
 void Game::addMoves(int square, vector<Move>& moves) {
@@ -141,18 +158,16 @@ bool Game::canCastle(int color, int side) {
 		if (pieces[g] != EMPTY) return false;
 	}
 
-	for (int a : attacked(color)) {
-		if (a == king) return false;
-		for (int g : gap) {
-			if (a == g) return false;
-		}
+	for (Move a : attacked(color)) {
+		if (a.to == king) return false;
+		if (a.to == gap[0]) return false;
 	}
 
 	return true;
 }
 
-vector<int> Game::attacked(int color) {
-	vector<int> attacked{};
+vector<Move> Game::attacked(int color) {
+	vector<Move> attacks;
 
 	for (int i = 0; i < 64; i++) {
 		if (i == 4 || i == 60) continue;
@@ -161,13 +176,10 @@ vector<int> Game::attacked(int color) {
 		if (!attacker) continue;
 		if ((attacker & COLOR) == color) continue;
 
-		vector<Move> attacking = moves(i);
-		for (Move m : attacking) {
-			attacked.push_back(m.to);
-		}
+		addMoves(i, attacks);
 	}
 
-	return attacked;
+	return attacks;
 }
 
 void Game::addSlide(int from, vector<Move>& moves, int r, int c) {

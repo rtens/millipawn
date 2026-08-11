@@ -2,11 +2,12 @@
 
 ## Current
 
+
 ## Planned: OTB
 
-- Prevent illegal moves
-
 - Game over
+  - Checkmate
+	- Stalemate
 
 
 ## Planned: AI
@@ -48,6 +49,8 @@
 
 
 ## Completed
+
+- Prevent illegal moves
 
 - Undo move
 	- simple move

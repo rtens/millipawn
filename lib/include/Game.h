@@ -30,7 +30,7 @@ class Game {
 	int castleBlack = QUEEN | KING;
 	int enPassant = -1;
 	bool canCastle(int color, int side);
-	vector<int> attacked(int color);
+	vector<Move> attacked(int color);
 
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);

@@ -24,8 +24,8 @@ void Game::make(Move move) {
 	}
 
 	// Capture en passant
+	made.enPassant = enPassant;
 	if (move.to == enPassant) {
-		made.enPassant = enPassant;
 		if (piece & WHITE) {
 			pieces[move.to + 8] = 0;
 		} else {
@@ -107,8 +107,8 @@ void Game::undo() {
 	}
 
 	// En passant
+	enPassant = move.enPassant;
 	if (move.enPassant > -1) {
-		enPassant = move.enPassant;
 		if (pieces[move.from] & WHITE) {
 			pieces[enPassant + 8] = PAWN | BLACK;
 		} else {

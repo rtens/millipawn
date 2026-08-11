@@ -20,7 +20,7 @@ void test(string name, function<void()> func) {
 		func();
 		cout << ".";
 	} catch (const string& e) {
-		cout << endl << name << ": " << e << endl;
+		cout << endl << "X " << name << ": " << e << endl;
 	}
 }
 
@@ -388,29 +388,33 @@ void castling() {
 		Game g;
 		g.restore("3pkp1r/3ppp2/////3PPP2/3PKP1R w KQkq");
 		should(pm(g.moves(60)), "");
+		g.turn = Game::BLACK;
 		should(pm(g.moves(4)), "");
 	});
 	test("cannot castle when in check", []() {
 		Game g;
 		g.restore("3pk2r/3Ppp2/////3pPP2/3PK2R w Kk");
 		should(pm(g.moves(60)), ",e1d2,e1f1");
+		g.turn = Game::BLACK;
 		should(pm(g.moves(4)), ",e8f8,e8d7");
 	});
 	test("can castle when not in check", []() {
 		Game g;
 		g.restore("r3k2r/3ppp2/4BR2/8/8/3r1q2/3PPP2/R3K2R w KQkq");
 		should(pm(g.moves(60)), ",e1d1,e1f1,e1g1,e1c1");
+		g.turn = Game::BLACK;
 		should(pm(g.moves(4)), ",e8d8,e8f8,e8g8,e8c8");
 	});
 	test("cannot castle through check", []() {
 		Game g;
-		g.restore("r3k2r/3ppp2/3B2R1/8/8/2n3q1/3PPP2/R3K2R w KQkq");
-		should(pm(g.moves(60)), ",e1d1,e1f1");
-		should(pm(g.moves(4)), ",e8d8,e8f8");
+		g.restore("r3k2r/3ppp2/1B4R1/8/8/2n3q1/3PPP2/R3K2R w KQkq");
+		should(pm(g.moves(60)), ",e1f1");
+		g.turn = Game::BLACK;
+		should(pm(g.moves(4)), ",e8f8");
 	});
-	test("king prevents castking", []() {
+	test("king prevents castling", []() {
 		Game g;
-		g.restore("r3kp/K2ppp w kq");
+		g.restore("r3kp/1K1ppp b kq");
 		should(pm(g.moves(4)), ",e8d8");
 	});
 
@@ -551,37 +555,59 @@ void undo() {
 		should(g.fen().substr(0, 26), "8/8/8/8/2Pp4/8/8/8 b - c3 ");
 	});
 
+	test("restore en passant", []() {
+		Game g;
+		g.restore("r////2Pp b - c3");
+		g.make(Move{0, 1});
+		g.undo();
+		should(g.fen().substr(0, 27), "r7/8/8/8/2Pp4/8/8/8 b - c3 ");
+	});
+
 	test("castling", []() {
 		Game g;
 		g.restore("r3k2r///////R3K2R w KQkq");
 
-		g.make(Move(4, 2));
+		g.make(Move{4, 2});
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
 
-		g.make(Move(4, 6));
+		g.make(Move{4, 6});
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
 
-		g.make(Move(60, 58));
+		g.make(Move{60, 58});
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
 
-		g.make(Move(60, 62));
+		g.make(Move{60, 62});
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
 
-		g.make(Move(0, 8));
+		g.make(Move{0, 8});
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
 
-		g.make(Move(56, 48));
+		g.make(Move{56, 48});
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
 
-		g.make(Move(4, 12));
+		g.make(Move{4, 12});
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
+	});
+}
+
+void illegalMoves() {
+	test("self-check", []() {
+		Game g;
+		g.restore("///3r4///4PP2/4K3");
+		should(pm(g.moves(60)), ",e1f1");
+	});
+
+	test("pinned piece", []() {
+		Game g;
+		g.restore("///4r///4R/4K");
+		should(pm(g.moves(52)), ",e2e3,e2e4,e2e5");
 	});
 }
 
@@ -597,6 +623,7 @@ int main() {
 	castling();
 	enPassant();
 	undo();
+	illegalMoves();
 
 	cout << endl;
 }
