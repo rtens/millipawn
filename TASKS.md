@@ -3,7 +3,37 @@
 ## Current
 
 
-## Planned: AI
+## Planned: Puzzle
+
+API: https://lichess.org/api#tag/puzzles
+
+- Start puzzle
+	- load PGN
+	- parse solution
+
+- Reject wrong move
+
+- Accept right move
+
+- Solve puzzle
+
+- UI
+	- download puzzles
+		- request API
+		- read response
+		- store puzzles
+	- next puzzle
+		- read next puzzle
+		- start puzzle
+		- save current index
+	- make move
+	- show rejection
+	- show acceptance
+	- respond to correct move
+	- show solved
+
+
+## Ideas: AI
 
 - Random response
 
@@ -25,20 +55,14 @@
 
 - Transposition tables
 
-
-## Ideas
-
-- End game
+- End game heuristics
 
 - Different strengths
 
-- Undo last move
+
+## Ideas
 
 - Export PGN of game
-
-- Puzzle solver
-
-- Check mate "animation"
 
 
 ## Completed
