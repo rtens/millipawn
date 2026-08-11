@@ -12,13 +12,16 @@ const string Game::STARTPOS =
 void Game::make(Move move) {
 	int piece = pieces[move.from];
 
-	if (move.promote) {
-		pieces[move.to] = move.promote | (piece  & COLOR);
-	} else {
-		pieces[move.to] = piece;
-	}
+	// Move & Capture
+	pieces[move.to] = piece;
 	pieces[move.from] = EMPTY;
 
+	// Promotion
+	if (move.promote) {
+		pieces[move.to] = move.promote | (piece  & COLOR);
+	}
+
+	// Capture en passant
 	if (move.to == enPassant) {
 		if (piece & WHITE) {
 			pieces[move.to + 8] = 0;
@@ -27,15 +30,22 @@ void Game::make(Move move) {
 		}
 	}
 
-	int row = move.from / 8;
-	if (piece == (PAWN | BLACK) && row == 1 && move.to == move.from + 16) {
-		enPassant = move.from + 8;
-	} else if (piece == (PAWN | WHITE) && row == 6 && move.to == move.from - 16) {
-		enPassant = move.from - 8;
-	} else {
-		enPassant = -1;
+	// Set en passant flag
+	enPassant = -1;
+	if (piece & PAWN) {
+		int start = 1;
+		int step = 8;
+		if (piece & WHITE) {
+			start = 6;
+			step = -8;
+		}
+		int row = move.from / 8;
+		if (row == start && move.to == move.from + 2 * step) {
+			enPassant = move.from + step;
+		}
 	}
 
+	// Castling
 	if (move.from == 60) {
 		if ((castleWhite & KING) && move.to == 62) {
 			pieces[61] = pieces[63];
@@ -71,5 +81,6 @@ void Game::make(Move move) {
 		castleWhite &= ~KING;
 	}
 
+	// Next turn
 	turn ^= COLOR;
 }
