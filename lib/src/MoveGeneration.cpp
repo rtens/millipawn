@@ -10,23 +10,31 @@ vector<Move> Game::moves(int square) {
 	vector<Move> moves;
 	addMoves(square, moves);
 
-	int mine = turn;
 	vector<Move> legals;
 	for (Move m : moves) {
-		bool legal = true;
-		make(m);
-		for (Move a : attacked(mine)) {
-			if (pieces[a.to] == (KING | mine)) {
-				legal = false;
-				break;
-			}
-		}
-		undo();
-		if (legal) {
+		if (isLegal(m)) {
 			legals.push_back(m);
 		}
 	}
 	return legals;
+}
+
+bool Game::isLegal(Move m) {
+	int mine = turn;
+	make(m);
+	bool check = checked(mine);
+	undo();
+	return !check;
+}
+
+
+bool Game::checked(int color) {
+	for (Move a : attacked(color)) {
+		if (pieces[a.to] == (KING | color)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Game::addMoves(int square, vector<Move>& moves) {

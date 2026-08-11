@@ -3,13 +3,6 @@
 ## Current
 
 
-## Planned: OTB
-
-- Game over
-  - Checkmate
-	- Stalemate
-
-
 ## Planned: AI
 
 - Random response
@@ -49,6 +42,10 @@
 
 
 ## Completed
+
+- Game over
+	- Checkmate
+	- Stalemate
 
 - Prevent illegal moves
 

@@ -618,6 +618,24 @@ void illegalMoves() {
 	});
 }
 
+void gameOver() {
+	test("not over", []() {
+		Game g;
+		g.restore("/4k3/4Q3/4R3 b");
+		should(g.over(), 0);
+	});
+	test("checkmate", []() {
+		Game g;
+		g.restore("4k3/4Q3/4R3 b");
+		should(g.over(), Game::CHECKMATE);
+	});
+	test("stalemate", []() {
+		Game g;
+		g.restore("7k/5Q b");
+		should(g.over(), Game::STALEMATE);
+	});
+}
+
 int main() {
 	restoring();
 	moving();
@@ -631,6 +649,7 @@ int main() {
 	enPassant();
 	undo();
 	illegalMoves();
+	gameOver();
 
 	cout << endl;
 }

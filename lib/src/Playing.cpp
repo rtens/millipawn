@@ -143,3 +143,19 @@ void Game::undo() {
 	// Previous turn
 	turn ^= COLOR;
 }
+
+int Game::over() {
+	for (int i = 0; i < 64; i++) {
+		if (pieces[i] & turn) {
+			if (moves(i).size()) {
+				return 0;
+			}
+		}
+	}
+
+	if (checked(turn)) {
+		return CHECKMATE;
+	}
+
+	return STALEMATE;
+}

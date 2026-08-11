@@ -59,6 +59,9 @@ class Game {
 	static const int WHITE = 8;
 	static const int BLACK = 16;
 
+	static const int CHECKMATE = 1;
+	static const int STALEMATE = 2;
+
 	int turn = WHITE;
 	int pieces[64] = {};
 
@@ -66,9 +69,12 @@ class Game {
 	static const string STARTPOS;
 	void make(Move move);
 	void undo();
+	int over();
 
 	// Move Generation
 	vector<Move> moves(int square);
+	bool isLegal(Move move);
+	bool checked(int color);
 	void addMoves(int square, vector<Move>& moves);
 
 	// Serialization
