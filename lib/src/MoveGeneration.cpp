@@ -26,7 +26,14 @@ vector<Move> Game::moves() {
 			addMoves(i, moves);
 		}
 	}
-	return moves;
+
+	vector<Move> legals;
+	for (Move m : moves) {
+		if (isLegal(m)) {
+			legals.push_back(m);
+		}
+	}
+	return legals;
 }
 
 bool Game::isLegal(Move m) {

@@ -7,11 +7,11 @@ OBJS = $(SRCS:.cpp=.o)
 # %: main/%.o $(OBJS)
 # 		$(CXX) $(CXXFLAGS) $< $(OBJS) -o bin/$@
 
-tree: main/tree.o $(OBJS)
-		$(CXX) $(CXXFLAGS) main/tree.o $(OBJS) -o bin/tree
+perft: main/perft.o $(OBJS)
+		$(CXX) $(CXXFLAGS) main/perft.o $(OBJS) -o bin/perft
 
-spec: main/spec.o $(OBJS)
-		$(CXX) $(CXXFLAGS) main/spec.o $(OBJS) -o bin/spec
+test: main/test.o $(OBJS)
+		$(CXX) $(CXXFLAGS) main/test.o $(OBJS) -o bin/test
 
 %.o: %.cpp $(INCLUDES)
 		$(CXX) $(CXXFLAGS) -c $< -o $@

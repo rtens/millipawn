@@ -55,9 +55,15 @@ int main() {
 					std::chrono::duration_cast<std::chrono::milliseconds>(end - begin)
 							.count();
 
-			cout << ((expected == positions) ? "  " : "X ") << (i + 1) << ": "
-					 << positions << " (" << time << " ms) "
-					 << ((expected == positions) ? "== " : "!= ") << expected << endl;
+			if (expected == positions) {
+				cout << "  " << (i + 1) << ": " << positions << " (" << time << " ms) "
+						 << endl;
+
+			} else {
+				cout << "X " << (i + 1) << ": " << positions << " != " << expected
+						 << endl;
+				break;
+			}
 		}
 	}
 }

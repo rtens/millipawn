@@ -636,6 +636,15 @@ void gameOver() {
 	});
 }
 
+void moveGeneration() {
+	test("Position 3 depth 1", []() {
+		Game g;
+		g.start("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -");
+		cout << endl << pm(g.moves()) << endl;
+		should(g.moves().size(), 14);
+	});
+}
+
 int main() {
 	restoring();
 	moving();
@@ -650,6 +659,7 @@ int main() {
 	undo();
 	illegalMoves();
 	gameOver();
+	moveGeneration();
 
 	cout << endl;
 }
