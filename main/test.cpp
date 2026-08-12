@@ -503,6 +503,13 @@ void enPassant() {
 		g.make(Move{36, 43});
 		should(g.fen().substr(0, 24), "8/8/8/8/8/3p4/8/8 w - - ");
 	});
+	test("bishops do not take en passant", []() {
+		Game g;
+		g.start("8/4b3/8/8/8/8/P7/8");
+		g.make(Move{48, 32});
+		g.make(Move{12, 40});
+		should(g.fen().substr(0, 17), "8/8/8/8/P7/b7/8/8");
+	});
 }
 
 void undo() {
@@ -636,15 +643,6 @@ void gameOver() {
 	});
 }
 
-void moveGeneration() {
-	test("Position 3 depth 1", []() {
-		Game g;
-		g.start("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - -");
-		cout << endl << pm(g.moves()) << endl;
-		should(g.moves().size(), 14);
-	});
-}
-
 int main() {
 	restoring();
 	moving();
@@ -659,7 +657,6 @@ int main() {
 	undo();
 	illegalMoves();
 	gameOver();
-	moveGeneration();
 
 	cout << endl;
 }

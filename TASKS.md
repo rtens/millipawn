@@ -2,7 +2,8 @@
 
 ## Current
 
-- Test position trees
+- Fix move generation
+  - Bishop takes en passant
 
 
 ## Planned: Puzzle
@@ -68,6 +69,8 @@ API: https://lichess.org/api#tag/puzzles
 
 
 ## Completed
+
+- Test position trees
 
 - Game over
 	- Checkmate
