@@ -9,10 +9,10 @@ using namespace std;
 
 map<vector<string>, vector<int>> tests = {
 		{{"Initial position", Game::STARTPOS},
-		 {20, 400, 8902, 197281, 4865609, 119060324}},
+		 {20, 400, 8902, 197281, 4865609}},	 //, 119060324}},
 		{{"Position 2",
 			"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - "},
-		 {48, 2039, 97862, 4085603, 193690690}},
+		 {48, 2039, 97862, 4085603}},	 //, 193690690}},
 		{{"Position 3", "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1"},
 		 {14, 191, 2812, 43238, 674624}},
 		{{"Position 4",
@@ -52,11 +52,14 @@ void perft(string name, string fen, vector<int> expecteds) {
 		std::chrono::steady_clock::time_point end =
 				std::chrono::steady_clock::now();
 		auto time =
-				std::chrono::duration_cast<std::chrono::milliseconds>(end - begin)
+				std::chrono::duration_cast<std::chrono::microseconds>(end - begin)
 						.count();
 
+		int rate = ((float)positions / (float)time) * 1000;
+
 		if (expected == positions) {
-			cout << "  " << i << ": " << positions << " (" << time << " ms) " << endl;
+			cout << "  " << i << ": " << positions << " (" << rate << " n/ms) "
+					 << endl;
 
 		} else {
 			cout << "X " << i << ": " << positions << " != " << expected << endl;

@@ -25,7 +25,7 @@ void Game::make(Move move) {
 
 	// Capture en passant
 	made.enPassant = enPassant;
-	if (move.to == enPassant) {
+	if ((piece & TYPE) == PAWN && move.to == enPassant) {
 		if (piece & WHITE) {
 			pieces[move.to + 8] = 0;
 		} else {
@@ -35,7 +35,7 @@ void Game::make(Move move) {
 
 	// Set en passant flag
 	enPassant = -1;
-	if (piece & PAWN) {
+	if ((piece & TYPE) == PAWN) {
 		int start = 1;
 		int step = 8;
 		if (piece & WHITE) {

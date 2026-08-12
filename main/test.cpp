@@ -510,6 +510,12 @@ void enPassant() {
 		g.make(Move{12, 40});
 		should(g.fen().substr(0, 17), "8/8/8/8/P7/b7/8/8");
 	});
+	test("rook cannot be taken with en passant", []() {
+		Game g;
+		g.start("/r");
+		g.make(Move{8, 24});
+		should(g.fen().substr(0, 22), "8/8/8/r7/8/8/8/8 b - -");
+	});
 }
 
 void undo() {

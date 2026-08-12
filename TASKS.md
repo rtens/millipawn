@@ -3,7 +3,13 @@
 ## Current
 
 - Fix move generation
-  - Bishop takes en passant
+	- [X] Initial Position
+  - [X] Bishop does not take en passant
+	- [X] Rook cannot be taken en passant
+	- [ ] Position 2
+	- [ ] Position 3
+	- [ ] Position 4
+	- [ ] Position 5
 
 
 ## Planned: Puzzle
