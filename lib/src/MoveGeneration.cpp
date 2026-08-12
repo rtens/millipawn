@@ -19,6 +19,16 @@ vector<Move> Game::moves(int square) {
 	return legals;
 }
 
+vector<Move> Game::moves() {
+	vector<Move> moves;
+	for (int i = 0; i < 64; i++) {
+		if (pieces[i] & turn) {
+			addMoves(i, moves);
+		}
+	}
+	return moves;
+}
+
 bool Game::isLegal(Move m) {
 	int mine = turn;
 	make(m);
@@ -26,7 +36,6 @@ bool Game::isLegal(Move m) {
 	undo();
 	return !check;
 }
-
 
 bool Game::checked(int color) {
 	for (Move a : attacked(color)) {
@@ -181,10 +190,9 @@ vector<Move> Game::attacked(int color) {
 		if (i == 4 || i == 60) continue;
 
 		int attacker = pieces[i];
-		if (!attacker) continue;
-		if ((attacker & COLOR) == color) continue;
-
-		addMoves(i, attacks);
+		if (attacker && !(attacker & color)) {
+			addMoves(i, attacks);
+		}
 	}
 
 	return attacks;

@@ -2,7 +2,7 @@
 
 ## Current
 
-- Test position tree
+- Test position trees
 
 
 ## Planned: Puzzle

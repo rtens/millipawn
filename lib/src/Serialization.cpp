@@ -105,7 +105,7 @@ string Game::fen() {
 	return ss.str();
 }
 
-void Game::restore(string fen) {
+void Game::start(string fen) {
 	for (int i = 0; i < 64; i++) {
 		pieces[i] = EMPTY;
 	}
@@ -174,10 +174,10 @@ void Game::restore(string fen) {
 				if (c == 'q') castleBlack += QUEEN;
 				break;
 
-		case p_enpassant:
-			if (c == '-') break;
-			enPassant = (c - 'a') + (8 - (fen[++i] - '0')) * 8;
-			break;
+			case p_enpassant:
+				if (c == '-') break;
+				enPassant = (c - 'a') + (8 - (fen[++i] - '0')) * 8;
+				break;
 		}
 	}
 }

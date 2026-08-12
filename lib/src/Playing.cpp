@@ -144,7 +144,7 @@ void Game::undo() {
 	turn ^= COLOR;
 }
 
-int Game::over() {
+int Game::isOver() {
 	for (int i = 0; i < 64; i++) {
 		if (pieces[i] & turn) {
 			if (moves(i).size()) {

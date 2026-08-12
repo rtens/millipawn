@@ -31,7 +31,9 @@ class Game {
 	int enPassant = -1;
 	bool canCastle(int color, int side);
 	vector<Move> attacked(int color);
-
+	bool isLegal(Move move);
+	bool checked(int color);
+	void addMoves(int square, vector<Move>& moves);
 	void pawnMoves(int square, vector<Move>& moves);
 	void knightMoves(int square, vector<Move>& moves);
 	void bishopMoves(int square, vector<Move>& moves);
@@ -69,16 +71,14 @@ class Game {
 	static const string STARTPOS;
 	void make(Move move);
 	void undo();
-	int over();
+	int isOver();
 
 	// Move Generation
 	vector<Move> moves(int square);
-	bool isLegal(Move move);
-	bool checked(int color);
-	void addMoves(int square, vector<Move>& moves);
+	vector<Move> moves();
 
 	// Serialization
 	string fen();
-	void restore(string fen);
+	void start(string fen);
 	static string print(Move move);
 };
