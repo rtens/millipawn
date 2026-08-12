@@ -2,6 +2,8 @@
 
 ## Current
 
+- Test position tree
+
 
 ## Planned: Puzzle
 

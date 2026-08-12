@@ -1,17 +1,17 @@
 CXX = g++
 CXXFLAGS = -g
-TARGET = bin/test
-SRCS = $(wildcard test/*.cpp) $(wildcard lib/src/*.cpp)
+SRCS = $(wildcard lib/src/*.cpp)
+INCLUDES = $(wildcard lib/include/*.h)
 OBJS = $(SRCS:.cpp=.o)
 
-$(TARGET): $(OBJS)
-		$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+%: test/%.o $(OBJS)
+		$(CXX) $(CXXFLAGS) $< $(OBJS) -o bin/$@
 
-%.o: %.cpp $(wildcard lib/include/*.h)
+%.o: %.cpp $(INCLUDES)
 		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-		rm -f $(OBJS) $(TARGET)
+		rm -f $(OBJS) test/*.o bin/*
 
-run: $(TARGET)
-		bin/test
+run: $(app)
+		bin/$(app)
