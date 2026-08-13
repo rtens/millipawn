@@ -12,6 +12,7 @@ void Puzzle::start(string pgn, vector<string> solution) {
 	game->start();
 	game->apply(pgn);
 
+	step = 0;
 	steps = {};
 	for (string s : solution) {
 		int from = Game::toSquare(s.substr(0, 2));
@@ -21,20 +22,34 @@ void Puzzle::start(string pgn, vector<string> solution) {
 }
 
 int Puzzle::propose(Move move) {
-	if (!steps.size()) return SOLVED;
+	if (step == steps.size()) {
+		return SOLVED;
+	}
 
 	game->make(move);
 
-	Move next = steps.back();
+	Move next = steps[step];
+	step++;
+
 	if (move.from != next.from || move.to != next.to) {
 		return WRONG;
 	}
 
-	steps.pop_back();
 
-	if (steps.size()) {
-		return RIGHT;
+	if (step == steps.size()) {
+		return SOLVED;
 	}
 
-	return SOLVED;
+	next = steps[step];
+	step++;
+
+	game->make(next);
+
+	return RIGHT;
+}
+
+void Puzzle::undo() {
+	if (!step) return;
+	game->undo();
+	step--;
 }

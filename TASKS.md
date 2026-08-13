@@ -2,16 +2,9 @@
 
 ## Current
 
-- Play a puzzle
-	- [X] start puzzle
-	- [X] solve puzzle
-	- [X] reject wrong move
-	- [ ] accept right move
-	- [ ] correct wrong move
-
 - Fix move generation
 	- [X] Initial Position
-  - [X] Bishop does not take en passant
+	- [X] Bishop does not take en passant
 	- [X] Rook cannot be taken en passant
 	- [ ] Position 2
 	- [ ] Position 3
@@ -76,6 +69,13 @@ API: https://lichess.org/api#tag/puzzles
 
 
 ## Completed
+
+- Play a puzzle
+	- start puzzle
+	- solve puzzle
+	- reject wrong move
+	- accept right move
+	- correct wrong move
 
 - Parse PGN
 

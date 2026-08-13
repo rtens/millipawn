@@ -7,6 +7,7 @@ class Puzzle {
  private:
 	Game* game;
 	vector<Move> steps;
+	int step = 0;
 
  public:
 	static const int WRONG = 0;
@@ -16,4 +17,5 @@ class Puzzle {
 	Puzzle(Game* game);
 	void start(string pgn, vector<string> solution);
 	int propose(Move move);
+	void undo();
 };
