@@ -14,27 +14,6 @@
 
 ## Planned: Puzzle
 
-API: https://lichess.org/api#tag/puzzles
-
-- Deal with undo
-
-- Provide next step
-
-- UI
-	- download puzzles
-		- request API
-		- read response
-		- store puzzles
-	- next puzzle
-		- read next puzzle
-		- start puzzle
-		- save current index
-	- make move
-	- show rejection
-	- show acceptance
-	- respond to correct move
-	- show solved
-
 
 ## Ideas: AI
 
@@ -69,6 +48,8 @@ API: https://lichess.org/api#tag/puzzles
 
 
 ## Completed
+
+- Provide next step
 
 - Play a puzzle
 	- start puzzle

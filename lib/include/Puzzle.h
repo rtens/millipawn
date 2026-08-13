@@ -18,4 +18,5 @@ class Puzzle {
 	void start(string pgn, vector<string> solution);
 	int propose(Move move);
 	void undo();
+	Move hint();
 };

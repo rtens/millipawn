@@ -53,3 +53,7 @@ void Puzzle::undo() {
 	game->undo();
 	step--;
 }
+
+Move Puzzle::hint() {
+	return steps[step];
+}
