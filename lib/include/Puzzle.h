@@ -19,4 +19,5 @@ class Puzzle {
 	int propose(Move move);
 	void undo();
 	Move hint();
+	Move last;
 };

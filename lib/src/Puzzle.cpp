@@ -27,6 +27,7 @@ int Puzzle::propose(Move move) {
 	}
 
 	game->make(move);
+	last = move;
 
 	Move next = steps[step];
 	step++;
@@ -34,7 +35,6 @@ int Puzzle::propose(Move move) {
 	if (move.from != next.from || move.to != next.to) {
 		return WRONG;
 	}
-
 
 	if (step == steps.size()) {
 		return SOLVED;
@@ -44,16 +44,16 @@ int Puzzle::propose(Move move) {
 	step++;
 
 	game->make(next);
+	last = next;
 
 	return RIGHT;
 }
 
 void Puzzle::undo() {
 	if (!step) return;
+	last = Move{};
 	game->undo();
 	step--;
 }
 
-Move Puzzle::hint() {
-	return steps[step];
-}
+Move Puzzle::hint() { return steps[step]; }
