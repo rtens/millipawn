@@ -16,6 +16,8 @@
 
 API: https://lichess.org/api#tag/puzzles
 
+- Parse PGN
+
 - Start puzzle
 	- load PGN
 	- parse solution
@@ -24,7 +26,9 @@ API: https://lichess.org/api#tag/puzzles
 
 - Accept right move
 
-- Solve puzzle
+- Deal with undo
+
+- Provide next step
 
 - UI
 	- download puzzles
