@@ -6,9 +6,9 @@
 #include "../include/Game.h"
 using namespace std;
 
-string square(int i) {
+string Game::print(int square) {
 	stringstream ss;
-	ss << char(i % 8 + 'a') << 8 - i / 8;
+	ss << char(square % 8 + 'a') << 8 - square / 8;
 	return ss.str();
 }
 
@@ -27,7 +27,7 @@ int toType(char c) {
 string Game::print(Move move) {
 	stringstream ss;
 
-	ss << square(move.from) << square(move.to);
+	ss << print(move.from) << print(move.to);
 
 	if (move.promote) {
 		if (move.promote == PAWN) ss << 'p';
@@ -112,7 +112,7 @@ string Game::fen() {
 	ss << " ";
 
 	if (enPassant > -1) {
-		ss << square(enPassant);
+		ss << print(enPassant);
 	} else {
 		ss << "-";
 	}

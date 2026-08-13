@@ -82,5 +82,6 @@ class Game {
 	void apply(string pgn);
 	string fen();
 	static string print(Move move);
+	static string print(int square);
 	static int toSquare(string s);
 };
