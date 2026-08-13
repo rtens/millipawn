@@ -8,32 +8,20 @@ using namespace std;
 #include "../test/base.h"
 
 void readFen();
-
 void readPgn();
-
 void moving();
-
 void pawnMoves();
-
 void knightMoves();
-
 void bishopMoves();
-
 void rookMoves();
-
 void queenMoves();
-
 void kingMoves();
-
 void castling();
-
 void enPassant();
-
 void undo();
-
 void illegalMoves();
-
 void gameOver();
+void puzzle();
 
 int main() {
 	readFen();
@@ -50,6 +38,7 @@ int main() {
 	undo();
 	illegalMoves();
 	gameOver();
+	puzzle();
 
 	cout << endl;
 }

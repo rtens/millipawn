@@ -21,7 +21,7 @@ void test(string name, function<void()> func) {
 	asserted = false;
 	try {
 		func();
-		cout << (asserted ? "." : "/");
+		cout << (asserted ? "." : "?");
 	} catch (const string& e) {
 		cout << endl << "X " << name << ": " << e << endl;
 	}

@@ -12,7 +12,7 @@ string square(int i) {
 	return ss.str();
 }
 
-int toSquare(string s) { return (s[0] - 'a') + (8 - (s[1] - '0')) * 8; }
+int Game::toSquare(string s) { return (s[0] - 'a') + (8 - (s[1] - '0')) * 8; }
 
 int toType(char c) {
 	if (c == 'P') return Game::PAWN;

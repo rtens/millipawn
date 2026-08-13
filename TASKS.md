@@ -2,6 +2,13 @@
 
 ## Current
 
+- Play a puzzle
+	- [X] start puzzle
+	- [X] solve puzzle
+	- [X] reject wrong move
+	- [ ] accept right move
+	- [ ] correct wrong move
+
 - Fix move generation
 	- [X] Initial Position
   - [X] Bishop does not take en passant
@@ -15,14 +22,6 @@
 ## Planned: Puzzle
 
 API: https://lichess.org/api#tag/puzzles
-
-- Start puzzle
-	- load PGN
-	- parse solution
-
-- Reject wrong move
-
-- Accept right move
 
 - Deal with undo
 
