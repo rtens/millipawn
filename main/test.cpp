@@ -7,7 +7,9 @@ using namespace std;
 #include "../lib/include/Game.h"
 #include "../test/base.h"
 
-void restoring();
+void readFen();
+
+void readPgn();
 
 void moving();
 
@@ -34,7 +36,8 @@ void illegalMoves();
 void gameOver();
 
 int main() {
-	restoring();
+	readFen();
+	readPgn();
 	moving();
 	pawnMoves();
 	knightMoves();

@@ -6,11 +6,28 @@
 #include "../include/Game.h"
 using namespace std;
 
+string square(int i) {
+	stringstream ss;
+	ss << char(i % 8 + 'a') << 8 - i / 8;
+	return ss.str();
+}
+
+int toSquare(string s) { return (s[0] - 'a') + (8 - (s[1] - '0')) * 8; }
+
+int toType(char c) {
+	if (c == 'P') return Game::PAWN;
+	if (c == 'R') return Game::ROOK;
+	if (c == 'N') return Game::KNIGHT;
+	if (c == 'B') return Game::BISHOP;
+	if (c == 'Q') return Game::QUEEN;
+	if (c == 'K') return Game::KING;
+	return Game::EMPTY;
+}
+
 string Game::print(Move move) {
 	stringstream ss;
 
-	ss << char((move.from % 8) + 'a') << 8 - (move.from / 8);
-	ss << char((move.to % 8) + 'a') << 8 - (move.to / 8);
+	ss << square(move.from) << square(move.to);
 
 	if (move.promote) {
 		if (move.promote == PAWN) ss << 'p';
@@ -95,8 +112,7 @@ string Game::fen() {
 	ss << " ";
 
 	if (enPassant > -1) {
-		char file = (enPassant % 8) + 'a';
-		ss << file << (8 - enPassant / 8);
+		ss << square(enPassant);
 	} else {
 		ss << "-";
 	}
@@ -149,15 +165,7 @@ void Game::start(string fen) {
 						c = c - 'a' + 'A';
 					}
 
-					int type;
-					if (c == 'P') type = PAWN;
-					if (c == 'R') type = ROOK;
-					if (c == 'N') type = KNIGHT;
-					if (c == 'B') type = BISHOP;
-					if (c == 'Q') type = QUEEN;
-					if (c == 'K') type = KING;
-
-					pieces[row * 8 + col] = color | type;
+					pieces[row * 8 + col] = color | toType(c);
 					col++;
 				}
 				break;
@@ -176,8 +184,94 @@ void Game::start(string fen) {
 
 			case p_enpassant:
 				if (c == '-') break;
-				enPassant = (c - 'a') + (8 - (fen[++i] - '0')) * 8;
+				enPassant = toSquare(string{c, fen[++i]});
 				break;
+		}
+	}
+}
+
+void Game::apply(string pgn) {
+	stringstream token;
+
+	for (int i = 0; i < pgn.length(); i++) {
+		char c = pgn[i];
+
+		if (c == 'x') continue;
+		if (c == '=') token << c;
+		if (c == '-') token << c;
+		if (c >= 'a' && c <= 'z') token << c;
+		if (c >= 'A' && c <= 'Z') token << c;
+		if (c >= '0' && c <= '9') token << c;
+
+		if (i == pgn.length() - 1 || pgn[i + 1] == ' ') {
+			string move = token.str();
+			token.str("");
+			token.clear();
+
+			if (move.length() < 2) return;
+
+			if (move == "O-O-O") {
+				if (turn == WHITE) {
+					make(Move{60, 58});
+				} else {
+					make(Move{4, 2});
+				}
+
+			} else if (move == "O-O") {
+				if (turn == WHITE) {
+					make(Move{60, 62});
+				} else {
+					make(Move{4, 6});
+				}
+
+			} else {
+				int promote = 0;
+				if (move.length() >= 4 && move[move.length() - 2] == '=') {
+					promote = toType(move[move.length() - 1]);
+					move = move.substr(0, move.length() - 2);
+				}
+
+				int to = toSquare(move.substr(move.length() - 2));
+				move = move.substr(0, move.length() - 2);
+
+				int type = PAWN;
+				if (move[0] > 'A' && move[0] < 'Z') {
+					type = toType(move[0]);
+					move = move.substr(1);
+				}
+
+				int row = -1;
+				int col = -1;
+				if (move.length() == 1) {
+					if (move[0] >= 'a' && move[0] <= 'h') {
+						col = toSquare(move + "1") % 8;
+					} else if (move[0] >= '1' && move[0] <= '8') {
+						row = toSquare("a" + move) / 8;
+					}
+				} else if (move.length() == 2) {
+					int s = toSquare(move);
+					row = s / 8;
+					col = s % 8;
+				}
+
+				bool found = false;
+				for (Move m : moves()) {
+					int piece = pieces[m.from];
+					if (m.to != to) continue;
+					if ((piece & TYPE) != type) continue;
+					if (col > -1 && m.from % 8 != col) continue;
+					if (row > -1 && m.from / 8 != row) continue;
+					if (promote && m.promote != promote) continue;
+
+					make(m);
+					found = true;
+					break;
+				}
+
+				if (!found) {
+					return;
+				}
+			}
 		}
 	}
 }

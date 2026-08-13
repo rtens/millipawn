@@ -78,7 +78,8 @@ class Game {
 	vector<Move> moves();
 
 	// Serialization
+	void start(string fen = STARTPOS);
+	void apply(string pgn);
 	string fen();
-	void start(string fen);
 	static string print(Move move);
 };

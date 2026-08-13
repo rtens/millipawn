@@ -5,7 +5,10 @@ using namespace std;
 
 #include "../lib/include/Game.h"
 
+bool asserted = false;
+
 void should(string actual, string expected, string tag) {
+	asserted = true;
 	if (actual != expected)
 		throw "[" + tag + "] Expected \n  " + expected + "\ngot\n  " + actual;
 }
@@ -15,9 +18,10 @@ void should(int a, int e, string tag) {
 }
 
 void test(string name, function<void()> func) {
+	asserted = false;
 	try {
 		func();
-		cout << ".";
+		cout << (asserted ? "." : "/");
 	} catch (const string& e) {
 		cout << endl << "X " << name << ": " << e << endl;
 	}

@@ -16,8 +16,6 @@
 
 API: https://lichess.org/api#tag/puzzles
 
-- Parse PGN
-
 - Start puzzle
 	- load PGN
 	- parse solution
@@ -79,6 +77,8 @@ API: https://lichess.org/api#tag/puzzles
 
 
 ## Completed
+
+- Parse PGN
 
 - Test position trees
 

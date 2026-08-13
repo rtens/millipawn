@@ -1,7 +1,7 @@
 #include "../lib/include/Game.h"
 #include "base.h"
 
-void restoring() {
+void readFen() {
 	test("empty board", []() {
 		Game g;
 		should(g.turn, Game::WHITE);
