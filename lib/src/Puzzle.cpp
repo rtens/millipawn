@@ -32,6 +32,10 @@ int Puzzle::propose(Move move) {
 	Move next = steps[step];
 	step++;
 
+	if (game->isOver()) {
+		return SOLVED;
+	}
+
 	if (move.from != next.from || move.to != next.to) {
 		return WRONG;
 	}

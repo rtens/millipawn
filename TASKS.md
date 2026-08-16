@@ -14,6 +14,8 @@
 
 ## Planned: Puzzle
 
+- Seperate proposal and response
+
 
 ## Ideas: AI
 
@@ -48,6 +50,8 @@
 
 
 ## Completed
+
+- Any checkmate solves a puzzle
 
 - Provide next step
 
