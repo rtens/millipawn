@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -g
 SRCS = $(wildcard lib/src/*.cpp)
-TESTS = $(wildcard test/*.cpp)
+TESTS = $(wildcard test/*/*.cpp)
 INCLUDES = $(wildcard lib/include/*.h)
 OBJS = $(SRCS:.cpp=.o)
 TEST_OBJS = $(TESTS:.cpp=.o)

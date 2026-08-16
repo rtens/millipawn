@@ -27,8 +27,8 @@ void test(string name, function<void()> func) {
 	}
 }
 
-string pm(vector<Move> moves) {
-	return accumulate(
-			moves.begin(), moves.end(), string(),
-			[](const string& s, Move m) { return s + "," + Game::print(m); });
-}
+// string pm(vector<Move> moves) {
+// 	return accumulate(
+// 			moves.begin(), moves.end(), string(),
+// 			[](const string& s, Move m) { return s + "," + Game::print(m); });
+// }
