@@ -7,9 +7,9 @@
 	- [X] Bishop does not take en passant
 	- [X] Rook cannot be taken en passant
 	- [ ] Position 2
-	- [ ] Position 3
-	- [ ] Position 4
-	- [ ] Position 5
+	- [X] Position 3
+	- [X] Position 4
+	- [X] Position 5
 
 
 ## Planned: Puzzle
