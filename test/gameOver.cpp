@@ -19,4 +19,12 @@ void gameOver() {
 		g.start("7k/5Q b");
 		should(g.isOver(), Game::STALEMATE);
 	});
+
+	test("checkmate in one", [](){
+		Game g;
+		g.start(
+					 "r1b2knr/ppq2ppp/3p1b2/1B1P4/5P2/2P5/P5PP/RNBQR1K1 w - -");
+		g.make(Move{60, 4});
+		should(g.isOver(), Game::CHECKMATE);
+	});
 }

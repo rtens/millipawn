@@ -194,7 +194,8 @@ vector<Move> Game::attacked(int color) {
 	vector<Move> attacks;
 
 	for (int i = 0; i < 64; i++) {
-		if (i == 4 || i == 60) continue;
+		if (castleBlack && i == 4) continue;
+		if (castleWhite && i == 60) continue;
 
 		int attacker = pieces[i];
 		if (attacker && !(attacker & color)) {
