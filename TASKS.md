@@ -2,15 +2,6 @@
 
 ## Current
 
-- Fix move generation
-	- [X] Initial Position
-	- [X] Bishop does not take en passant
-	- [X] Rook cannot be taken en passant
-	- [ ] Position 2
-	- [X] Position 3
-	- [X] Position 4
-	- [X] Position 5
-
 
 ## Planned: Puzzle
 
@@ -52,6 +43,12 @@
 
 
 ## Completed
+
+- Fix move generation
+	- Initial Position
+	- Bishop does not take en passant
+	- Rook cannot be taken en passant
+	- Pawns attack diagonally
 
 - Any checkmate solves a puzzle
 

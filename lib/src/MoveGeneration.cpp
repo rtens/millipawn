@@ -198,8 +198,18 @@ vector<Move> Game::attacked(int color) {
 		if (castleWhite && i == 60) continue;
 
 		int attacker = pieces[i];
-		if (attacker && !(attacker & color)) {
-			addMoves(i, attacks);
+		if (!attacker) continue;
+		if (attacker & color) continue;
+
+		addMoves(i, attacks);
+
+		if (attacker == (WHITE | PAWN) && i / 8 == 1) {
+			attacks.push_back(Move{i, i - 7});
+			attacks.push_back(Move{i, i - 9});
+		}
+		if (attacker == (BLACK | PAWN) && i / 8 == 6) {
+			attacks.push_back(Move{i, i + 7});
+			attacks.push_back(Move{i, i + 9});
 		}
 	}
 

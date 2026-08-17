@@ -68,6 +68,14 @@ void castling() {
 		should(pm(g.moves(4)), ",e8f8");
 	});
 
+	test("pawns attack diagonally", []() {
+		Game g;
+		g.start("r3k2r/2P3P1/////2p3p1/R3K2R w KQkq");
+		should(pm(g.moves(60)), ",e1d2,e1e2,e1f2");
+		g.turn = Game::BLACK;
+		should(pm(g.moves(4)), ",e8d7,e8e7,e8f7");
+	});
+
 	test("king prevents castling", []() {
 		Game g;
 		g.start("r3kp/1K1ppp b kq");

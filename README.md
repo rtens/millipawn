@@ -6,7 +6,7 @@ A very simple chess engine to play on the xteink x3.
 
 `make run app=test` runs the [test suite](main/test.cpp).
 
-`make run app=perft` runs the [performance and move path enumeration test](main/perft.cpp).
+`MAX_DEPTH=4 make run app=perft` runs the [performance and move path enumeration test](main/perft.cpp) with its default maximum depth.
 
 ## Poject Tasks
 
