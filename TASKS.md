@@ -46,6 +46,8 @@
 
 ## Ideas
 
+- Refactor into Board, Piece, Move, Game, Parser, Printer (in namespace Chess)
+
 - Export PGN of game
 
 
