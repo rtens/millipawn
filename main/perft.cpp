@@ -28,7 +28,7 @@ using namespace std;
 	Find difference, make move, repeate.
 */
 
-map<vector<string>, vector<int>> tests = {
+map<vector<string>, vector<uint8_t>> tests = {
 		{{"Initial position", Game::STARTPOS},
 		 {20, 400, 8902, 197281, 4865609, 119060324}},
 		{{"Position 2",
@@ -44,12 +44,12 @@ map<vector<string>, vector<int>> tests = {
 		 {44, 1486, 62379, 2103487, 89941194}},
 };
 
-int countPositions(Game g, int depth) {
+uint8_t countPositions(Game g, uint8_t depth) {
 	if (!depth) {
 		return g.moves().size();
 	}
 
-	int sum = 0;
+	uint8_t sum = 0;
 	for (Move m : g.moves()) {
 		g.make(m);
 		sum += countPositions(g, depth - 1);
@@ -59,29 +59,29 @@ int countPositions(Game g, int depth) {
 	return sum;
 }
 
-void perft(string name, string fen, vector<int> expecteds) {
+void perft(string name, string fen, vector<uint8_t> expecteds) {
 	cout << endl << name << endl;
 	Game g;
 	g.start(fen);
 
-	int maxDepth = 4;
+	uint8_t maxDepth = 4;
 	if (getenv("MAX_DEPTH")) {
 		maxDepth = stoi(getenv("MAX_DEPTH"));
 	}
 
-	for (int i = 0; i < expecteds.size() && i < maxDepth; i++) {
+	for (uint8_t i = 0; i < expecteds.size() && i < maxDepth; i++) {
 		auto expected = expecteds[i];
 
 		std::chrono::steady_clock::time_point begin =
 				std::chrono::steady_clock::now();
-		int positions = countPositions(g, i);
+		uint8_t positions = countPositions(g, i);
 		std::chrono::steady_clock::time_point end =
 				std::chrono::steady_clock::now();
 		auto time =
 				std::chrono::duration_cast<std::chrono::microseconds>(end - begin)
 						.count();
 
-		int rate = ((float)positions / (float)time) * 1000;
+		uint8_t rate = ((float)positions / (float)time) * 1000;
 
 		if (expected == positions) {
 			cout << "  " << (i + 1) << ": " << positions << " (" << rate << " n/ms) "
@@ -95,11 +95,11 @@ void perft(string name, string fen, vector<int> expecteds) {
 	}
 }
 
-void enumerate(Game g, int depth) {
-	int sum = 0;
+void enumerate(Game g, uint8_t depth) {
+	uint8_t sum = 0;
 	for (Move m : g.moves()) {
 		g.make(m);
-		int positions = 1;
+		uint8_t positions = 1;
 		if (depth) {
 			positions = countPositions(g, depth - 1);
 		}
@@ -111,7 +111,7 @@ void enumerate(Game g, int depth) {
 	cout << endl << "Total: " << sum << endl;
 }
 
-int main() {
+uint8_t main() {
 	for (auto test : tests) {
 		perft(test.first[0], test.first[1], test.second);
 	}

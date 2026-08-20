@@ -1,23 +1,24 @@
 #pragma once
 
+#include <cstdint>
 #include <string>
 #include <vector>
 using namespace std;
 
 struct Move {
-	int from = -1;
-	int to = -1;
-	int promote = 0;
+	uint8_t from = 255;
+	uint8_t to = 255;
+	uint8_t promote = 0;
 };
 
 struct MadeMove {
-	int from = -1;
-	int to = -1;
-	int capture = 0;
-	int promoted = 0;
-	int enPassant = -1;
-	int castledBlack = 0;
-	int castledWhite = 0;
+	uint8_t from = 255;
+	uint8_t to = 255;
+	uint8_t capture = 0;
+	uint8_t promoted = 0;
+	uint8_t enPassant = 255;
+	uint8_t castledBlack = 0;
+	uint8_t castledWhite = 0;
 };
 
 class Game {
@@ -26,55 +27,56 @@ class Game {
 	vector<MadeMove> history{};
 
 	// Move Generation
-	int castleWhite = QUEEN | KING;
-	int castleBlack = QUEEN | KING;
-	int enPassant = -1;
-	bool canCastle(int color, int side);
-	vector<Move> attacked(int color);
+	uint8_t castleWhite = QUEEN | KING;
+	uint8_t castleBlack = QUEEN | KING;
+	uint8_t enPassant = NOWHERE;
+	bool canCastle(uint8_t color, uint8_t side);
+	vector<Move> attacked(uint8_t color);
 	bool isLegal(Move move);
-	bool checked(int color);
-	void addMoves(int square, vector<Move>& moves);
-	void pawnMoves(int square, vector<Move>& moves);
-	void knightMoves(int square, vector<Move>& moves);
-	void bishopMoves(int square, vector<Move>& moves);
-	void rookMoves(int square, vector<Move>& moves);
-	void queenMoves(int square, vector<Move>& moves);
-	void kingMoves(int square, vector<Move>& moves);
-	void addPawnMove(int square, vector<Move>& moves, int r, int c,
+	bool checked(uint8_t color);
+	void addMoves(uint8_t square, vector<Move>& moves);
+	void pawnMoves(uint8_t square, vector<Move>& moves);
+	void knightMoves(uint8_t square, vector<Move>& moves);
+	void bishopMoves(uint8_t square, vector<Move>& moves);
+	void rookMoves(uint8_t square, vector<Move>& moves);
+	void queenMoves(uint8_t square, vector<Move>& moves);
+	void kingMoves(uint8_t square, vector<Move>& moves);
+	void addPawnMove(uint8_t square, vector<Move>& moves, uint8_t r, uint8_t c,
 									 bool capture = true);
-	bool addJump(int from, vector<Move>& moves, int r, int c, bool capture = true,
-							 int promote = 0);
-	void addSlide(int from, vector<Move>& moves, int r, int c);
+	bool addJump(uint8_t from, vector<Move>& moves, int r, int c,
+							 bool capture = true, uint8_t promote = 0);
+	void addSlide(uint8_t from, vector<Move>& moves, int r, int c);
 
  public:
-	static const int TYPE = 7;
-	static const int COLOR = 24;
-	static const int EMPTY = 0;
+	static const uint8_t TYPE = 7;
+	static const uint8_t COLOR = 24;
+	static const uint8_t EMPTY = 0;
+	static const uint8_t NOWHERE = 255;
 
-	static const int KING = 1;
-	static const int QUEEN = 2;
-	static const int BISHOP = 3;
-	static const int KNIGHT = 4;
-	static const int ROOK = 5;
-	static const int PAWN = 6;
+	static const uint8_t KING = 1;
+	static const uint8_t QUEEN = 2;
+	static const uint8_t BISHOP = 3;
+	static const uint8_t KNIGHT = 4;
+	static const uint8_t ROOK = 5;
+	static const uint8_t PAWN = 6;
 
-	static const int WHITE = 8;
-	static const int BLACK = 16;
+	static const uint8_t WHITE = 8;
+	static const uint8_t BLACK = 16;
 
-	static const int CHECKMATE = 1;
-	static const int STALEMATE = 2;
+	static const uint8_t CHECKMATE = 1;
+	static const uint8_t STALEMATE = 2;
 
-	int turn = WHITE;
-	int pieces[64] = {};
+	uint8_t turn = WHITE;
+	uint8_t pieces[64] = {};
 
 	// Playing
 	static const string STARTPOS;
 	void make(Move move);
 	void undo();
-	int isOver();
+	uint8_t isOver();
 
 	// Move Generation
-	vector<Move> moves(int square);
+	vector<Move> moves(uint8_t square);
 	vector<Move> moves();
 
 	// Serialization
@@ -82,6 +84,6 @@ class Game {
 	void apply(string pgn);
 	string fen();
 	static string print(Move move);
-	static string print(int square);
-	static int toSquare(string s);
+	static string print(uint8_t square);
+	static uint8_t toSquare(string s);
 };

@@ -13,7 +13,7 @@ void should(string actual, string expected, string tag) {
 		throw "[" + tag + "] Expected \n  " + expected + "\ngot\n  " + actual;
 }
 
-void should(int a, int e, string tag) {
+void should(uint8_t a, uint8_t e, string tag) {
 	should(to_string(a), to_string(e), tag);
 }
 

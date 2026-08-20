@@ -15,13 +15,13 @@ void Puzzle::start(string pgn, vector<string> solution) {
 	step = 0;
 	steps = {};
 	for (string s : solution) {
-		int from = Game::toSquare(s.substr(0, 2));
-		int to = Game::toSquare(s.substr(2));
+		uint8_t from = Game::toSquare(s.substr(0, 2));
+		uint8_t to = Game::toSquare(s.substr(2));
 		steps.push_back(Move{from, to});
 	}
 }
 
-int Puzzle::propose(Move move) {
+uint8_t Puzzle::propose(Move move) {
 	if (step == steps.size()) {
 		return SOLVED;
 	}

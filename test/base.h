@@ -6,7 +6,7 @@ using namespace std;
 
 void should(string actual, string expected, string tag = "Failed");
 
-void should(int a, int e, string tag = "Failed");
+void should(uint8_t a, uint8_t e, string tag = "Failed");
 
 void test(string name, function<void()> func);
 

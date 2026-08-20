@@ -48,8 +48,8 @@ void puzzle() {
 		p.start("e4 e5", {"g1f3"});
 		should(p.propose(Move{61, 61 - 9}), Puzzle::WRONG);
 		p.undo();
-		should(p.last.from, -1);
-		should(p.last.to, -1);
+		should(p.last.from, 255);
+		should(p.last.to, 255);
 		should(g.fen(),
 					 "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 1");
 		should(p.propose(Move{62, 62 - 17}), Puzzle::SOLVED, "solved");

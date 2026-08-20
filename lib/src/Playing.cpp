@@ -10,7 +10,7 @@ const string Game::STARTPOS =
 		"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 void Game::make(Move move) {
-	int piece = pieces[move.from];
+	uint8_t piece = pieces[move.from];
 
 	// Move & Capture
 	MadeMove made = MadeMove{move.from, move.to, pieces[move.to]};
@@ -34,15 +34,15 @@ void Game::make(Move move) {
 	}
 
 	// Set en passant flag
-	enPassant = -1;
+	enPassant = NOWHERE;
 	if ((piece & TYPE) == PAWN) {
-		int start = 1;
+		uint8_t start = 1;
 		int step = 8;
 		if (piece & WHITE) {
 			start = 6;
 			step = -8;
 		}
-		int row = move.from / 8;
+		uint8_t row = move.from / 8;
 		if (row == start && move.to == move.from + 2 * step) {
 			enPassant = move.from + step;
 		}
@@ -108,7 +108,7 @@ void Game::undo() {
 
 	// En passant
 	enPassant = move.enPassant;
-	if (move.enPassant > -1) {
+	if (move.enPassant != NOWHERE) {
 		if (pieces[move.from] & WHITE) {
 			pieces[enPassant + 8] = PAWN | BLACK;
 		} else {
@@ -144,8 +144,8 @@ void Game::undo() {
 	turn ^= COLOR;
 }
 
-int Game::isOver() {
-	for (int i = 0; i < 64; i++) {
+uint8_t Game::isOver() {
+	for (uint8_t i = 0; i < 64; i++) {
 		if (pieces[i] & turn) {
 			if (moves(i).size()) {
 				return 0;

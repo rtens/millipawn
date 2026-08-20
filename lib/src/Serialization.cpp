@@ -6,15 +6,17 @@
 #include "../include/Game.h"
 using namespace std;
 
-string Game::print(int square) {
+string Game::print(uint8_t square) {
 	stringstream ss;
 	ss << char(square % 8 + 'a') << 8 - square / 8;
 	return ss.str();
 }
 
-int Game::toSquare(string s) { return (s[0] - 'a') + (8 - (s[1] - '0')) * 8; }
+uint8_t Game::toSquare(string s) {
+	return (s[0] - 'a') + (8 - (s[1] - '0')) * 8;
+}
 
-int toType(char c) {
+uint8_t toType(char c) {
 	if (c == 'P') return Game::PAWN;
 	if (c == 'R') return Game::ROOK;
 	if (c == 'N') return Game::KNIGHT;
@@ -44,17 +46,17 @@ string Game::print(Move move) {
 string Game::fen() {
 	stringstream ss;
 
-	int empties = 0;
-	for (int i = 0; i < 64; i++) {
+	uint8_t empties = 0;
+	for (uint8_t i = 0; i < 64; i++) {
 		if (i > 0 && i % 8 == 0) {
 			if (empties) {
-				ss << empties;
+				ss << (int)empties;
 				empties = 0;
 			}
 			ss << "/";
 		}
 
-		int p = pieces[i];
+		uint8_t p = pieces[i];
 		if (p == EMPTY) {
 			empties++;
 
@@ -64,8 +66,8 @@ string Game::fen() {
 				empties = 0;
 			}
 
-			int type = p & TYPE;
-			int color = p & COLOR;
+			uint8_t type = p & TYPE;
+			uint8_t color = p & COLOR;
 			char c = '?';
 
 			if (type == PAWN) c = 'p';
@@ -82,7 +84,7 @@ string Game::fen() {
 	}
 
 	if (empties) {
-		ss << empties;
+		ss << (int)empties;
 	}
 
 	if (turn == WHITE) {
@@ -111,7 +113,7 @@ string Game::fen() {
 
 	ss << " ";
 
-	if (enPassant > -1) {
+	if (enPassant != Game::NOWHERE) {
 		ss << print(enPassant);
 	} else {
 		ss << "-";
@@ -122,24 +124,24 @@ string Game::fen() {
 }
 
 void Game::start(string fen) {
-	for (int i = 0; i < 64; i++) {
+	for (uint8_t i = 0; i < 64; i++) {
 		pieces[i] = EMPTY;
 	}
 	castleBlack = 0;
 	castleWhite = 0;
-	enPassant = -1;
+	enPassant = Game::NOWHERE;
 	history.clear();
 
-	const int p_pieces = 0;
-	const int p_turn = 1;
-	const int p_castle = 2;
-	const int p_enpassant = 3;
-	int part = p_pieces;
+	const uint8_t p_pieces = 0;
+	const uint8_t p_turn = 1;
+	const uint8_t p_castle = 2;
+	const uint8_t p_enpassant = 3;
+	uint8_t part = p_pieces;
 
-	int row = 0;
-	int col = 0;
+	uint8_t row = 0;
+	uint8_t col = 0;
 
-	for (int i = 0; i < fen.length(); i++) {
+	for (uint8_t i = 0; i < fen.length(); i++) {
 		char c = fen[i];
 
 		if (c == ' ') {
@@ -154,13 +156,13 @@ void Game::start(string fen) {
 					col = 0;
 
 				} else if (c >= '1' && c <= '8') {
-					for (int i = 0; i < c - '0'; i++) {
+					for (uint8_t i = 0; i < c - '0'; i++) {
 						pieces[row * 8 + col] = EMPTY;
 						col++;
 					}
 
 				} else {
-					int color = WHITE;
+					uint8_t color = WHITE;
 					if (c > 'a') {
 						color = BLACK;
 						c = c - 'a' + 'A';
@@ -226,23 +228,23 @@ void Game::apply(string pgn) {
 				}
 
 			} else {
-				int promote = 0;
+				uint8_t promote = 0;
 				if (move.length() >= 4 && move[move.length() - 2] == '=') {
 					promote = toType(move[move.length() - 1]);
 					move = move.substr(0, move.length() - 2);
 				}
 
-				int to = toSquare(move.substr(move.length() - 2));
+				uint8_t to = toSquare(move.substr(move.length() - 2));
 				move = move.substr(0, move.length() - 2);
 
-				int type = PAWN;
+				uint8_t type = PAWN;
 				if (move[0] > 'A' && move[0] < 'Z') {
 					type = toType(move[0]);
 					move = move.substr(1);
 				}
 
-				int row = -1;
-				int col = -1;
+				uint8_t row = NOWHERE;
+				uint8_t col = NOWHERE;
 				if (move.length() == 1) {
 					if (move[0] >= 'a' && move[0] <= 'h') {
 						col = toSquare(move + "1") % 8;
@@ -250,18 +252,18 @@ void Game::apply(string pgn) {
 						row = toSquare("a" + move) / 8;
 					}
 				} else if (move.length() == 2) {
-					int s = toSquare(move);
+					uint8_t s = toSquare(move);
 					row = s / 8;
 					col = s % 8;
 				}
 
 				bool found = false;
 				for (Move m : moves()) {
-					int piece = pieces[m.from];
+					uint8_t piece = pieces[m.from];
 					if (m.to != to) continue;
 					if ((piece & TYPE) != type) continue;
-					if (col > -1 && m.from % 8 != col) continue;
-					if (row > -1 && m.from / 8 != row) continue;
+					if (col != NOWHERE && m.from % 8 != col) continue;
+					if (row != NOWHERE && m.from / 8 != row) continue;
 					if (promote && m.promote != promote) continue;
 
 					make(m);

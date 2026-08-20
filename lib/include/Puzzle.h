@@ -7,16 +7,16 @@ class Puzzle {
  private:
 	Game* game;
 	vector<Move> steps;
-	int step = 0;
+	uint8_t step = 0;
 
  public:
-	static const int WRONG = 0;
-	static const int RIGHT = 1;
-	static const int SOLVED = 2;
+	static const uint8_t WRONG = 0;
+	static const uint8_t RIGHT = 1;
+	static const uint8_t SOLVED = 2;
 
 	Puzzle(Game* game);
 	void start(string pgn, vector<string> solution);
-	int propose(Move move);
+	uint8_t propose(Move move);
 	void undo();
 	Move hint();
 	Move last;
