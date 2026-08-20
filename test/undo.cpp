@@ -91,4 +91,13 @@ void undo() {
 		g.undo();
 		should(g.fen().substr(0, 30), "r3k2r/8/8/8/8/8/8/R3K2R w KQkq");
 	});
+
+	test("empty history on start", []() {
+		Game g;
+		g.start("r");
+		g.make(Move{0, 1});
+		g.start("1r");
+		g.undo();
+		should(g.fen().substr(0, 2), "1r");
+	});
 }

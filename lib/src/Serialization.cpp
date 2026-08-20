@@ -128,6 +128,7 @@ void Game::start(string fen) {
 	castleBlack = 0;
 	castleWhite = 0;
 	enPassant = -1;
+	history.clear();
 
 	const int p_pieces = 0;
 	const int p_turn = 1;
