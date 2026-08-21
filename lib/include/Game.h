@@ -43,9 +43,9 @@ class Game {
 	void kingMoves(uint8_t square, vector<Move>& moves);
 	void addPawnMove(uint8_t square, vector<Move>& moves, uint8_t r, uint8_t c,
 									 bool capture = true);
-	bool addJump(uint8_t from, vector<Move>& moves, int r, int c,
+	bool addJump(uint8_t from, vector<Move>& moves, int8_t r, int8_t c,
 							 bool capture = true, uint8_t promote = 0);
-	void addSlide(uint8_t from, vector<Move>& moves, int r, int c);
+	void addSlide(uint8_t from, vector<Move>& moves, int8_t r, int8_t c);
 
  public:
 	static const uint8_t TYPE = 7;

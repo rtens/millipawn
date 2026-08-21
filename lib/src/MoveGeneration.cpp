@@ -66,7 +66,7 @@ void Game::addMoves(uint8_t square, vector<Move>& moves) {
 void Game::pawnMoves(uint8_t square, vector<Move>& moves) {
 	uint8_t piece = pieces[square];
 
-	int step = 1;
+	int8_t step = 1;
 	uint8_t startRow = 1;
 	if (piece & WHITE) {
 		step = -1;
@@ -81,7 +81,7 @@ void Game::pawnMoves(uint8_t square, vector<Move>& moves) {
 		addPawnMove(square, moves, step * 2, 0, false);
 	}
 
-	for (int d : {-1, 1}) {
+	for (int8_t d : {-1, 1}) {
 		uint8_t to = square + step * 8 + d;
 		if (pieces[to] != EMPTY || to == enPassant) {
 			addPawnMove(square, moves, step, d);
@@ -223,7 +223,7 @@ vector<Move> Game::attacked(uint8_t color) {
 	return attacks;
 }
 
-void Game::addSlide(uint8_t from, vector<Move>& moves, int r, int c) {
+void Game::addSlide(uint8_t from, vector<Move>& moves, int8_t r, int8_t c) {
 	for (uint8_t i = 1; i < 8; i++) {
 		if (!addJump(from, moves, r * i, c * i)) {
 			return;
@@ -231,7 +231,7 @@ void Game::addSlide(uint8_t from, vector<Move>& moves, int r, int c) {
 	}
 }
 
-bool Game::addJump(uint8_t from, vector<Move>& moves, int r, int c,
+bool Game::addJump(uint8_t from, vector<Move>& moves, int8_t r, int8_t c,
 									 bool capture, uint8_t promote) {
 	uint8_t row = from / 8 + r;
 	if (row < 0 || row > 7) return false;

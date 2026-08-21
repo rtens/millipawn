@@ -37,7 +37,7 @@ void Game::make(Move move) {
 	enPassant = NOWHERE;
 	if ((piece & TYPE) == PAWN) {
 		uint8_t start = 1;
-		int step = 8;
+		int8_t step = 8;
 		if (piece & WHITE) {
 			start = 6;
 			step = -8;
