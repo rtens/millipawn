@@ -26,6 +26,7 @@ void puzzle() {
 		Puzzle p(&g);
 		p.start("e4 e5", {"g1f3", "b8c6", "f1c4"});
 		should(p.propose(Move{62, 62 - 17}), Puzzle::RIGHT);
+		p.respond();
 		should(Game::print(p.last), "b8c6");
 		should(g.fen(),
 					 "r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 1");
@@ -78,5 +79,14 @@ void puzzle() {
 		p.start("e4 a6 Qh5 b6 Bc4 h6", {"h5f7"});
 		should(p.propose(Move{Game::toSquare("c4"), Game::toSquare("f7")}),
 					 Puzzle::SOLVED);
+	});
+
+	test("ignore respond when it is solved", []() {
+		Game g;
+		Puzzle p(&g);
+		p.start("e4 e5", {"g1f3"});
+		p.propose(Move{62, 62 - 17});
+		p.respond();
+		should(Game::print(p.last), "g1f3");
 	});
 }

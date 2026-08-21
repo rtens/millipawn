@@ -44,13 +44,17 @@ uint8_t Puzzle::propose(Move move) {
 		return SOLVED;
 	}
 
-	next = steps[step];
+	return RIGHT;
+}
+
+void Puzzle::respond() {
+	if (step >= steps.size()) return;
+
+	Move next = steps[step];
 	step++;
 
 	game->make(next);
 	last = next;
-
-	return RIGHT;
 }
 
 void Puzzle::undo() {
